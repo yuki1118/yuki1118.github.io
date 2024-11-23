@@ -55,17 +55,16 @@
         }
         .image-group {
             display: flex;
-            flex-wrap: wrap;
             gap: 1em;
             justify-content: center;
+            align-items: center;
             margin-top: 1em;
+            overflow-x: auto; /* 横スクロールを許可 */
         }
         .image-group img {
-            max-width: 100%;
+            flex-shrink: 0; /* 幅が縮まないように */
+            max-width: 150px;
             border-radius: 8px;
-        }
-        .image-group a {
-            text-align: center;
         }
         footer {
             text-align: center;
@@ -73,14 +72,6 @@
             background: #ecf0f1;
             margin-top: 2em;
             font-size: 0.9rem;
-        }
-        @media (max-width: 600px) {
-            h2 {
-                font-size: 1.5rem;
-            }
-            h3 {
-                font-size: 1.2rem;
-            }
         }
     </style>
 </head>
@@ -93,10 +84,10 @@
         <h2>アプリ作成</h2>
         <h3>🔦自動モールス</h3>
         <div class="image-group">
-            <img id="home" src="img/flashMorse/home.png" alt="アプリホーム画面" width="200">
-            <img id="settei" src="img/flashMorse/setting.png" alt="アプリ設定画面" width="200">
+            <img id="home" src="img/flashMorse/home.png" alt="アプリホーム画面">
+            <img id="settei" src="img/flashMorse/setting.png" alt="アプリ設定画面">
             <a href="http://apps.apple.com/app/id6738281439">
-                <img id="apli" src="img/flashMorse/download.png" alt="ダウンロードリンク" width="100">
+                <img id="apli" src="img/flashMorse/download.png" alt="ダウンロードリンク">
             </a>
         </div>
     </div>
