@@ -38,6 +38,10 @@
             padding-bottom: 0.2em;
             margin-bottom: 1em;
         }
+        h3 {
+            font-size: 1.4rem;
+            margin-top: 0.5em;
+        }
         p {
             font-size: 1rem;
             margin: 0 0 1em;
@@ -49,12 +53,34 @@
         a:hover {
             text-decoration: underline;
         }
+        .image-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1em;
+            justify-content: center;
+            margin-top: 1em;
+        }
+        .image-group img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+        .image-group a {
+            text-align: center;
+        }
         footer {
             text-align: center;
             padding: 1em 0;
             background: #ecf0f1;
             margin-top: 2em;
             font-size: 0.9rem;
+        }
+        @media (max-width: 600px) {
+            h2 {
+                font-size: 1.5rem;
+            }
+            h3 {
+                font-size: 1.2rem;
+            }
         }
     </style>
 </head>
@@ -66,15 +92,13 @@
     <div class="container">
         <h2>アプリ作成</h2>
         <h3>🔦自動モールス</h3>
-    　 <tr>
-    　    <td>
-                 <img id = "home" src="img/flashMorse/home.png" width="200px"></td>
-    　    <td>
-                  <img id = "settei" src="img/flashMorse/setting.png" width="200px"p></td>
-            <td>
-                <a href="http://apps.apple.com/app/id6738281439"><img id = "apli" src="img/flashMorse/download.png" width="100px"></td> </a> 
-            </td>
-    　 </tr>
+        <div class="image-group">
+            <img id="home" src="img/flashMorse/home.png" alt="アプリホーム画面" width="200">
+            <img id="settei" src="img/flashMorse/setting.png" alt="アプリ設定画面" width="200">
+            <a href="http://apps.apple.com/app/id6738281439">
+                <img id="apli" src="img/flashMorse/download.png" alt="ダウンロードリンク" width="100">
+            </a>
+        </div>
     </div>
 
     <footer>
