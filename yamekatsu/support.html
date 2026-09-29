@@ -1,67 +1,171 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>サポート | やめ活</title>
-<style>
-  body { font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif; line-height: 1.8; color: #222; max-width: 720px; margin: 0 auto; padding: 32px 20px 80px; background: #fafafa; }
-  h1 { font-size: 1.5rem; border-bottom: 3px solid #FF6B35; padding-bottom: 12px; }
-  h2 { font-size: 1.15rem; margin-top: 2em; color: #FF6B35; }
-  p, li { font-size: 0.98rem; }
-  a { color: #FF6B35; }
-  .btn { display: inline-block; margin-top: 8px; padding: 10px 20px; background: #FF6B35; color: #fff; border-radius: 8px; text-decoration: none; font-weight: bold; }
-  details { background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 12px 16px; margin: 10px 0; }
-  summary { font-weight: bold; cursor: pointer; }
-  footer { margin-top: 48px; font-size: 0.8rem; color: #888; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>サポート | やめ活</title>
+    <style>
+        :root {
+            --bg-color: #f5f9fc;
+            --text-color: #172033;
+            --sub-text-color: #667085;
+            --primary-color: #2563eb;
+            --primary-light: #e8f1ff;
+            --border-color: #e2e8f0;
+            --white: #ffffff;
+            --max-width: 1100px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Hiragino Kaku Gothic ProN", "Hiragino Sans", Arial, sans-serif; color: var(--text-color); background: var(--bg-color); line-height: 1.8; }
+        a { color: inherit; text-decoration: none; }
+        .container { width: min(90%, var(--max-width)); margin: 0 auto; }
+
+        header { position: fixed; top: 0; left: 0; width: 100%; z-index: 100; padding: 14px 0; }
+        .header-inner {
+            width: min(92%, var(--max-width)); min-height: 64px; margin: 0 auto; padding: 8px 10px 8px 22px;
+            display: flex; align-items: center; justify-content: space-between;
+            background: rgba(255, 255, 255, 0.88); border: 1px solid rgba(226, 232, 240, 0.9);
+            border-radius: 999px; box-shadow: 0 12px 35px rgba(15, 23, 42, 0.07);
+            backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+        }
+        .logo { font-size: 17px; font-weight: 800; letter-spacing: 0.02em; }
+        .logo span { color: var(--primary-color); }
+        nav { display: flex; align-items: center; gap: 6px; }
+        nav a { padding: 9px 17px; border-radius: 999px; color: #475467; font-size: 13px; font-weight: 700; transition: 0.2s ease; }
+        nav a:hover { color: var(--text-color); background: var(--primary-light); }
+
+        main { padding-top: 130px; }
+        .hero { padding: 30px 0 20px; }
+        .hero-label { display: inline-block; margin-bottom: 20px; padding: 7px 14px; border-radius: 100px; background: var(--primary-light); color: var(--primary-color); font-size: 12px; font-weight: 700; letter-spacing: 0.08em; }
+        .hero h1 { max-width: 850px; font-size: clamp(36px, 6vw, 64px); line-height: 1.2; letter-spacing: -0.04em; font-weight: 800; }
+        .hero h1 span { color: var(--primary-color); }
+        .hero-description { max-width: 650px; margin-top: 24px; color: var(--sub-text-color); font-size: 15px; line-height: 1.9; }
+
+        .policy-section { padding: 20px 0 80px; }
+        .policy-card-list { display: grid; gap: 24px; }
+        .content-card { padding: 40px; background: var(--white); border: 1px solid var(--border-color); border-radius: 28px; box-shadow: 0 15px 45px rgba(15, 23, 42, 0.04); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .content-card:hover { transform: translateY(-2px); box-shadow: 0 18px 45px rgba(15, 23, 42, 0.07); }
+        .content-card h2 { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; font-size: 20px; letter-spacing: -0.02em; color: var(--text-color); }
+        .badge-num { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: var(--primary-light); color: var(--primary-color); font-size: 13px; font-weight: 800; flex-shrink: 0; }
+        .content-card p { margin-bottom: 16px; color: #475467; font-size: 15px; line-height: 1.8; }
+        .content-card p:last-child { margin-bottom: 0; }
+        .content-card a.inline-link { color: var(--primary-color); text-decoration: underline; text-underline-offset: 3px; font-weight: 600; }
+
+        .policy-list { margin: 12px 0 20px 20px; padding-left: 10px; color: #475467; font-size: 15px; }
+        .policy-list li { margin-bottom: 8px; }
+
+        /* アコーディオン */
+        details { background: #f8fafc; border: 1px solid var(--border-color); border-radius: 12px; padding: 16px 20px; margin-bottom: 12px; }
+        summary { font-weight: 700; cursor: pointer; color: var(--text-color); font-size: 15px; outline: none; }
+        details p { margin-top: 12px; margin-bottom: 0; font-size: 14px; color: var(--sub-text-color); line-height: 1.7; }
+
+        .contact-button { display: inline-flex; align-items: center; gap: 10px; flex-shrink: 0; padding: 14px 24px; border-radius: 100px; background: var(--primary-color); color: var(--white); font-size: 13px; font-weight: 700; transition: transform 0.2s ease, box-shadow 0.2s ease; margin-top: 10px; }
+        .contact-button:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(37, 99, 235, 0.25); }
+
+        footer { padding: 40px 0; background: #0b1120; color: #94a3b8; }
+        .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+        .copyright { font-size: 12px; }
+        .footer-links a { font-size: 12px; margin-left: 16px; transition: 0.2s; }
+        .footer-links a:hover { color: var(--white); }
+
+        @media (max-width: 768px) {
+            header { top: 12px; }
+            .header-inner { min-height: 58px; padding-left: 18px; }
+            .logo { font-size: 15px; }
+            main { padding-top: 100px; }
+            .hero { padding: 40px 0 30px; }
+            .content-card { padding: 30px 20px; border-radius: 22px; }
+            .contact-button { width: 100%; justify-content: center; }
+            .footer-inner { flex-direction: column; align-items: flex-start; }
+            .footer-links { margin-top: 12px; }
+            .footer-links a { margin-left: 0; margin-right: 16px; }
+        }
+    </style>
 </head>
 <body>
-<h1>やめ活 サポート</h1>
-<p>「やめ活」をご利用いただきありがとうございます。ご不明点やご要望、不具合のご報告は、以下の方法でお気軽にご連絡ください。</p>
+    <header>
+        <div class="header-inner">
+            <a href="../index.html" class="logo">
+                YUKUN'S <span>Collect</span>
+            </a>
+            <nav>
+                <a href="details.html">詳細・スクリーンショット</a>
+                <a href="support.html">サポート</a>
+                <a href="privacy.html">プライバシー</a>
+                <a href="terms.html">利用規約</a>
+            </nav>
+        </div>
+    </header>
 
-<h2>お問い合わせ</h2>
-<p>下記メールアドレスまでご連絡ください。通常3営業日以内に返信いたします。</p>
-<p><a class="btn" href="mailto:iosyk520@gmail.com?subject=【やめ活】お問い合わせ">iosyk520@gmail.com へメールする</a></p>
-<p>お問い合わせの際は、以下の情報をご記入いただけるとスムーズです。</p>
-<ul>
-<li>ご利用の端末（例: iPhone 15 Pro）とiOSのバージョン</li>
-<li>アプリのバージョン（設定画面に表示）</li>
-<li>症状が発生した状況（できるだけ詳しく）</li>
-</ul>
+    <main>
+        <section class="hero">
+            <div class="container">
+                <span class="hero-label">SUPPORT</span>
+                <h1><span>サポート</span></h1>
+                <p class="hero-description">
+                    「やめ活」をご利用いただきありがとうございます。ご不明点やご要望、不具合のご報告は、以下の方法でお気軽にご連絡ください。
+                </p>
+            </div>
+        </section>
 
-<h2>よくあるご質問</h2>
+        <section class="policy-section">
+            <div class="container policy-card-list">
+                <div class="content-card">
+                    <h2><span class="badge-num">1</span>お問い合わせ</h2>
+                    <p>下記メールアドレスまでご連絡ください。通常3営業日以内に返信いたします。</p>
+                    <p>お問い合わせの際は、以下の情報をご記入いただけるとスムーズです。</p>
+                    <ul class="policy-list">
+                        <li>ご利用の端末（例: iPhone 15 Pro）とiOSのバージョン</li>
+                        <li>アプリのバージョン（設定画面に表示）</li>
+                        <li>症状が発生した状況（できるだけ詳しく）</li>
+                    </ul>
+                    <a href="mailto:iosyk520@gmail.com?subject=【やめ活】お問い合わせ" class="contact-button">
+                        iosyk520@gmail.com へメールする
+                    </a>
+                </div>
 
-<details>
-<summary>無料でどこまで使えますか？</summary>
-<p>習慣を2つまで登録・編集でき、経過日数・浮いたお金のカウント、達成通知とバッジ、ホーム画面の小ウィジェットは無料でご利用いただけます。3つ目以降の習慣、中サイズ/ロック画面ウィジェット、履歴グラフ、テーマカラーはProプラン（月額・年額・買い切り）でご利用いただけます。</p>
-</details>
+                <div class="content-card">
+                    <h2><span class="badge-num">2</span>よくあるご質問</h2>
+                    
+                    <details>
+                        <summary>無料でどこまで使えますか？</summary>
+                        <p>習慣を2つまで登録・編集でき、経過日数・浮いたお金のカウント、達成通知とバッジ、ホーム画面の小ウィジェットは無料でご利用いただけます。3つ目以降の習慣、中サイズ/ロック画面ウィジェット、履歴グラフ、テーマカラーはProプラン（月額・年額・買い切り）でご利用いただけます。</p>
+                    </details>
+                    
+                    <details>
+                        <summary>機種変更するとデータは引き継がれますか？</summary>
+                        <p>現在のバージョンでは、記録は端末内にのみ保存されており、機種変更時の自動引き継ぎ機能（iCloud同期）には対応していません。この機能は今後のアップデートで追加を予定しています。</p>
+                    </details>
 
-<details>
-<summary>機種変更するとデータは引き継がれますか？</summary>
-<p>現在のバージョンでは、記録は端末内にのみ保存されており、機種変更時の自動引き継ぎ機能（iCloud同期）には対応していません。この機能は今後のアップデートで追加を予定しています。</p>
-</details>
+                    <details>
+                        <summary>購入したProプランを他の端末でも使いたい</summary>
+                        <p>設定画面の「購入を復元」、またはペイウォール画面の「購入を復元」をタップしてください。同じApple IDでサインインしていれば、購入済みのProの状態が復元されます。</p>
+                    </details>
 
-<details>
-<summary>購入したProプランを他の端末でも使いたい</summary>
-<p>設定画面の「購入を復元」、またはペイウォール画面の「購入を復元」をタップしてください。同じApple IDでサインインしていれば、購入済みのProの状態が復元されます。</p>
-</details>
+                    <details>
+                        <summary>サブスクリプションを解約したい</summary>
+                        <p>iPhoneの「設定」アプリ＞ご自身のお名前＞「サブスクリプション」から解約できます。アプリ内の「設定」＞「サブスクリプションを管理」からも同じ画面を開けます。</p>
+                    </details>
 
-<details>
-<summary>サブスクリプションを解約したい</summary>
-<p>iPhoneの「設定」アプリ＞ご自身のお名前＞「サブスクリプション」から解約できます。アプリ内の「設定」＞「サブスクリプションを管理」からも同じ画面を開けます。</p>
-</details>
+                    <details>
+                        <summary>データを外部に送信していますか？</summary>
+                        <p>いいえ。登録した習慣やリセット履歴などの記録は、すべて端末内にのみ保存されます。広告や分析のための外部送信は一切行っていません。詳しくは<a href="./privacy.html" class="inline-link">プライバシーポリシー</a>をご覧ください。</p>
+                    </details>
+                </div>
+            </div>
+        </section>
+    </main>
 
-<details>
-<summary>データを外部に送信していますか？</summary>
-<p>いいえ。登録した習慣やリセット履歴などの記録は、すべて端末内にのみ保存されます。広告や分析のための外部送信は一切行っていません。詳しくは<a href="./privacy.html">プライバシーポリシー</a>をご覧ください。</p>
-</details>
-
-<h2>関連リンク</h2>
-<p><a href="./privacy.html">プライバシーポリシー</a> ／ <a href="./terms.html">利用規約</a> ／ <a href="https://yuki1118.github.io/">開発者サイトトップ</a></p>
-
-<footer>
-<p>&copy; 2026 やめ活</p>
-</footer>
+    <footer>
+        <div class="container footer-inner">
+            <p class="copyright">© 2026 YUKUN'S Collect. All Rights Reserved.</p>
+            <div class="footer-links">
+                <a href="./privacy.html">プライバシー</a>
+                <a href="./terms.html">利用規約</a>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>

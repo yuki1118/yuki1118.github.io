@@ -1,182 +1,1035 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YUKUN's Collect</title>
+
+    <title>App Studio | アプリ開発者</title>
+
+    <meta
+        name="description"
+        content="App Studioでは、iOSアプリを中心に、日常で繰り返し使いたくなるシンプルなアプリを開発しています。"
+    >
+
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            line-height: 1.6;
-            color: #3e2723; /* 濃いブラウン */
+        :root {
+            --bg-color: #f5f9fc;
+            --surface-color: #ffffff;
+            --text-color: #172033;
+            --sub-text-color: #667085;
+            --primary-color: #2563eb;
+            --primary-soft: #eaf2ff;
+            --border-color: #e2e8f0;
+            --max-width: 1160px;
+        }
+
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            background-color: #efebe9; /* 全体の背景 */
         }
-        header {
-            background: #5d4037; /* ヘッダー背景 */
-            color: #fff;
-            padding: 1.5em 0;
-            text-align: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+        html {
+            scroll-behavior: smooth;
         }
-        header h1 {
-            margin: 0;
-            font-size: 2.8rem;
+
+        body {
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Helvetica Neue",
+                "Hiragino Kaku Gothic ProN",
+                "Hiragino Sans",
+                Arial,
+                sans-serif;
+            color: var(--text-color);
+            background: var(--bg-color);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
         }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
         .container {
-            max-width: 960px;
-            margin: 2em auto;
-            padding: 1.5em;
-            background: #fff;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
+            width: min(90%, var(--max-width));
+            margin: 0 auto;
         }
-        .app-title {
-            text-align: left;
-            margin-bottom: 1.5em;
+
+        .section {
+            padding: 120px 0;
         }
-        .app-title h2 {
-            font-size: 2rem;
-            color: #4e342e;
-            margin: 0;
+
+        /* ========================================
+           ヘッダー
+        ======================================== */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 14px 0;
         }
-        .app-content {
+
+        .header-inner {
+            width: min(92%, var(--max-width));
+            min-height: 64px;
+            margin: 0 auto;
+            padding: 8px 10px 8px 22px;
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            align-items: flex-start;
+            background: rgba(255, 255, 255, 0.88);
+            border: 1px solid rgba(226, 232, 240, 0.9);
+            border-radius: 999px;
+            box-shadow: 0 12px 35px rgba(15, 23, 42, 0.07);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
         }
-        .app-images {
-            flex: 0;
-            text-align: center;
+
+        .logo {
+            font-size: 17px;
+            font-weight: 800;
+            letter-spacing: 0.02em;
         }
-        .app-images img {
-            max-width: 300px;
-            margin: 0.5em 0;
-            border-radius: 8px;
-            padding-left: 3em;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+        .logo span {
+            color: var(--primary-color);
         }
-        .app-details {
-            flex: 2;
-            margin-left: 2em;
-            margin-right: 1em;
-            margin-top: 15em;
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
-        .app-details p {
-            font-size: 1rem;
-            color: #3e2723;
+
+        nav a {
+            padding: 9px 17px;
+            border-radius: 999px;
+            color: #475467;
+            font-size: 13px;
+            font-weight: 700;
+            transition: 0.2s ease;
         }
-        .app-download {
-            margin-top: 1.5em;
-            text-align: center;
+
+        nav a:hover {
+            color: var(--text-color);
+            background: var(--primary-soft);
         }
-        .app-download img {
-            width: 200px;
+
+        /* ========================================
+           ヒーロー (スライドショー対応)
+        ======================================== */
+        .hero {
+            position: relative;
+            min-height: 860px;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at 82% 28%, rgba(37, 99, 235, 0.13), transparent 29%),
+                radial-gradient(circle at 15% 75%, rgba(6, 182, 212, 0.08), transparent 25%),
+                var(--bg-color);
+        }
+
+        .hero::before,
+        .hero::after {
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .hero::before {
+            width: 520px;
+            height: 520px;
+            top: -300px;
+            right: -100px;
+            border: 1px solid rgba(37, 99, 235, 0.08);
+        }
+
+        .hero::after {
+            width: 320px;
+            height: 320px;
+            bottom: -210px;
+            left: -100px;
+            border: 1px solid rgba(6, 182, 212, 0.08);
+        }
+
+        .hero-slider {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.6s ease-in-out, visibility 0.6s ease-in-out;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-slide.active {
+            opacity: 1;
+            visibility: visible;
+            position: relative;
+        }
+
+        .hero-inner {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr;
+            align-items: center;
+            gap: 50px;
+        }
+
+        .hero-content {
+            max-width: 620px;
+        }
+
+        .app-logo {
+            margin-bottom: 28px;
+        }
+
+        .app-logo img {
+            width: 82px;
+            height: 82px;
+            border-radius: 22px;
+            object-fit: cover;
+            box-shadow: 0 18px 45px rgba(15, 23, 42, 0.14);
+        }
+
+        .hero-label {
+            display: inline-flex;
+            align-items: center;
+            min-height: 30px;
+            margin-bottom: 18px;
+            padding: 5px 13px;
+            border-radius: 999px;
+            background: var(--primary-soft);
+            color: var(--primary-color);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.14em;
+        }
+
+        .hero h1 {
+            font-size: clamp(48px, 7vw, 82px);
+            line-height: 1.04;
+            letter-spacing: -0.055em;
+            font-weight: 800;
+        }
+
+        .hero h1 span {
+            color: var(--primary-color);
+        }
+
+        .hero-description {
+            max-width: 570px;
+            margin-top: 30px;
+            color: var(--sub-text-color);
+            font-size: 16px;
+            line-height: 2;
+        }
+
+        .hero-action-group {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-top: 38px;
+            flex-wrap: wrap;
+        }
+
+        .app-store-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 23px;
+            color: #ffffff;
+            background: #111827;
+            border-radius: 999px;
+            box-shadow: 0 12px 25px rgba(15, 23, 42, 0.13);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .app-store-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 18px 32px rgba(15, 23, 42, 0.18);
+        }
+
+        .app-store-text small {
+            display: block;
+            font-size: 9px;
+            line-height: 1;
+            opacity: 0.8;
+        }
+
+        .app-store-text strong {
+            display: block;
+            margin-top: 4px;
+            font-size: 16px;
+            line-height: 1;
+        }
+
+        .detail-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 14px 28px;
+            color: var(--text-color);
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid var(--border-color);
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 15px;
+            box-shadow: 0 4px 15px rgba(15, 23, 42, 0.05);
+            transition: all 0.2s ease;
+        }
+
+        .detail-button:hover {
+            background: var(--surface-color);
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.1);
+        }
+
+        .hero-image {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .phone {
+            width: 275px;
+            padding: 10px;
+            border-radius: 42px;
+            background: #111827;
+            box-shadow: 0 38px 80px rgba(15, 23, 42, 0.22);
+            transform: rotate(2deg);
+        }
+
+        .phone img {
+            width: 100%;
+            border-radius: 34px;
+            aspect-ratio: 9 / 19.5;
+            object-fit: cover;
+            background: #dbeafe;
+        }
+
+        .app-tabs {
+            width: min(100%, 520px);
+            margin-top: 32px;
+            padding: 5px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 5px;
+            background: rgba(255, 255, 255, 0.86);
+            border: 1px solid var(--border-color);
+            border-radius: 999px;
+            box-shadow: 0 10px 28px rgba(15, 23, 42, 0.07);
+        }
+
+        .app-tab {
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border-radius: 999px;
+            color: #475467;
+            font-size: 13px;
+            font-weight: 700;
+            transition: 0.2s ease;
+        }
+
+        .app-tab:hover {
+            color: var(--primary-color);
+            background: var(--primary-soft);
+        }
+
+        .app-tab::after {
+            content: "→";
+            font-size: 14px;
+            transition: transform 0.2s ease;
+        }
+
+        .app-tab:hover::after {
+            transform: translateX(3px);
+        }
+
+        /* ========================================
+           スライダー矢印ナビゲーション
+        ======================================== */
+        .slider-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            border-radius: 50%;
+            color: var(--sub-text-color);
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
         }
-        footer {
+
+        .slider-arrow:hover {
+            background: rgba(255, 255, 255, 0.95);
+            color: var(--primary-color);
+            box-shadow: 0 4px 15px rgba(15, 23, 42, 0.08);
+        }
+
+        .prev-arrow {
+            left: 24px;
+        }
+
+        .next-arrow {
+            right: 24px;
+        }
+
+        .slider-nav {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            z-index: 10;
+        }
+
+        .slider-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(37, 99, 235, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .slider-dot.active {
+            background: var(--primary-color);
+            transform: scale(1.3);
+        }
+
+        /* ========================================
+           セクション見出し
+        ======================================== */
+        .section-title {
+            max-width: 720px;
+            margin: 0 auto 65px;
             text-align: center;
-            padding: 1em 0;
-            background: #3e2723;
-            color: #fff;
-            margin-top: 2.5em;
-            font-size: 0.9rem;
-        }
-        footer a {
-            color: #e0e0e0;
         }
 
-        /* メディアクエリで画像サイズをデバイスごとに調整 */
-        @media (max-width: 1500px) {
-            .app-images img {
-                max-width: 300px;
-            }
-            .app-content {
-                flex-direction: column;
-                align-items: center;
-            }
-            .app-details {
-                margin-left: 0;
-                text-align: center;
-            }
-        }
-        
-        @media (max-width: 1200px) {
-            .app-images img {
-                max-width: 300px;
-            }
-            .app-content {
-                flex-direction: column;
-                align-items: center;
-            }
-            .app-details {
-                text-align: center;
-            }
+        .section-title .label {
+            display: block;
+            margin-bottom: 12px;
+            color: var(--primary-color);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
         }
 
+        .section-title h2 {
+            font-size: clamp(34px, 5vw, 52px);
+            line-height: 1.12;
+            font-weight: 800;
+            letter-spacing: -0.045em;
+        }
+
+        .section-title p {
+            margin-top: 18px;
+            color: var(--sub-text-color);
+            font-size: 15px;
+        }
+
+        /* ========================================
+           開発アプリ
+        ======================================== */
+        .apps {
+            background: var(--bg-color);
+        }
+
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .app-card {
+            position: relative; /* 疑似要素リンクの基準位置 */
+            min-height: 212px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.92);
+            border: 1px solid var(--border-color);
+            border-radius: 28px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.035);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .app-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 22px 45px rgba(15, 23, 42, 0.09);
+        }
+
+        .app-card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .app-card-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .app-card-title-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        /* タイトルリンクを疑似要素でカード全体に広げる */
+        .app-card-main-link::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .app-card-icon {
+            width: 64px;
+            height: 64px;
+            flex-shrink: 0;
+            border-radius: 18px;
+            object-fit: cover;
+            background: #e2e8f0;
+        }
+
+        .app-card h3 {
+            font-size: 19px;
+            font-weight: 800;
+        }
+
+        .app-status {
+            display: inline-block;
+            margin-top: 4px;
+            color: var(--primary-color);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+        }
+
+        .app-card p {
+            margin-top: 30px;
+            color: var(--sub-text-color);
+            font-size: 14px;
+            line-height: 1.9;
+        }
+
+        .app-store-button-development {
+            position: relative;
+            z-index: 2; /* カード全体のリンクより前面に配置して個別クリック可能に */
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 12px;
+            color: #ffffff;
+            background: #111827;
+            border-radius: 999px;
+            box-shadow: 0 12px 25px rgba(15, 23, 42, 0.13);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .app-store-button-development:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 18px 32px rgba(15, 23, 42, 0.18);
+        }
+
+        .app-store-text-development small {
+            display: block;
+            font-size: 9px;
+            line-height: 1;
+            opacity: 0.8;
+        }
+
+        .app-store-text-development strong {
+            display: block;
+            margin-top: 2px;
+            font-size: 11px;
+            line-height: 1;
+        }
+
+        .hero-label-development {
+            display: inline-flex;
+            align-items: center;
+            min-height: 30px;
+            margin-bottom: 18px;
+            padding: 5px 13px;
+            border-radius: 999px;
+            background: var(--primary-soft);
+            color: var(--primary-color);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.14em;
+        }
+        /* ========================================
+           フッター
+        ======================================== */
+        footer {
+            padding: 50px 0;
+            background: #0b1120;
+            color: #94a3b8;
+        }
+
+        .footer-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+        }
+
+        .copyright {
+            font-size: 12px;
+        }
+
+        .footer-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-links a {
+            padding: 8px 13px;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            border-radius: 999px;
+            font-size: 11px;
+            transition: 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: #ffffff;
+            border-color: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        /* ========================================
+           スマートフォン
+        ======================================== */
         @media (max-width: 768px) {
-            .app-images img {
-                max-width: 200px;
+            header {
+                padding: 10px 0;
             }
-            .app-content {
-                flex-direction: column;
-                align-items: center;
+
+            .header-inner {
+                padding-left: 18px;
             }
-            .app-details {
-                margin-left: 0;
+
+            nav {
+                display: none;
+            }
+
+            .section {
+                padding: 90px 0;
+            }
+
+            .hero {
+                min-height: auto;
+                padding: 145px 0 90px;
+            }
+
+            .hero-inner {
+                grid-template-columns: 1fr;
+                gap: 55px;
                 text-align: center;
+            }
+
+            .hero-content {
+                margin: 0 auto;
+            }
+
+            .app-logo img {
+                width: 76px;
+                height: 76px;
+                margin: 0 auto;
+            }
+
+            .hero-description {
+                margin-right: auto;
+                margin-left: auto;
+                font-size: 15px;
+            }
+
+            .hero-action-group {
+                justify-content: center;
+            }
+
+            .hero-image {
+                order: 2;
+            }
+
+            .phone {
+                width: 220px;
+            }
+
+            .app-tabs {
+                width: min(100%, 420px);
+                margin-top: 28px;
+            }
+
+            .app-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .app-card {
+                min-height: auto;
+            }
+
+            .footer-inner {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .slider-arrow {
+                width: 36px;
+                height: 36px;
+                font-size: 16px;
+            }
+
+            .prev-arrow {
+                left: 10px;
+            }
+
+            .next-arrow {
+                right: 10px;
             }
         }
 
         @media (max-width: 480px) {
-            header h1 {
-                font-size: 2rem;
+            .container {
+                width: min(88%, var(--max-width));
             }
-            .app-title h2 {
-                font-size: 1.5rem;
+
+            .hero h1 {
+                font-size: 48px;
             }
-            .app-content {
-                padding: 1em;
+
+            .hero-description {
+                font-size: 14px;
             }
-            .app-details p {
-                font-size: 0.9rem;
+
+            .hero-action-group {
+                flex-direction: column;
+                gap: 12px;
             }
-            .app-download img {
-                width: 160px;
+
+            .detail-button {
+                width: 100%;
+                justify-content: center;
             }
-            .app-images img {
-                max-width: 170px;
+
+            .app-tabs {
+                grid-template-columns: 1fr;
+                border-radius: 22px;
+            }
+
+            .app-tab {
+                min-height: 44px;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+                justify-content: center;
             }
         }
     </style>
 </head>
+
 <body>
+
+    <!-- ヘッダー -->
     <header>
-        <h1>YUKUN's Collect</h1>
-    </header>
-    <div class="container">
-        <div class="app-title">
-            <h2>🔦 flashMorse</h2>
+        <div class="header-inner">
+            <a href="index.html" class="logo">
+                YUKUN'S <span>Collect</span>
+            </a>
+
+            <nav>
+                <a href="https://note.com/ctrl_c_v_soumu" target="_blank" rel="noopener noreferrer">Blog</a>
+            </nav>
         </div>
-        <div class="app-content">
-            <div class="app-images">
-                <img src="img/flashMorse/home.png" alt="アプリホーム画面">
-            </div>
-            <div class="app-details">
-                <p>
-                    自動モールスは、iPhoneのフラッシュライトを使ってモールス信号を簡単に送信できるアプリです。繰り返し送信や定型文設定など、便利な機能を搭載しています。
-                </p>
-                <div class="app-download">
-                    <a href="http://apps.apple.com/app/id6738281439">
-                        <img src="img/flashMorse/download.png" alt="App Storeでダウンロード">
-                    </a>
+    </header>
+
+    <!-- ヒーロー (スライドショー) -->
+    <section class="hero">
+        <div class="hero-slider" id="heroSlider">
+            
+            <!-- スライド1: flashMorse -->
+            <div class="hero-slide active">
+                <div class="container hero-inner">
+                    <div class="hero-content">
+                        <div class="app-logo">
+                            <img src="img/flashMorse/icon.png" alt="flashMorse アプリアイコン">
+                        </div>
+                        <span class="hero-label">iOS APPLICATION</span>
+                        <h1><span>flashMorse</span></h1>
+                        <p class="hero-description">
+                            入力したテキストを、モールス信号へ。<br>
+                            iPhoneのフラッシュライトを使って、文字を光のパターンとして表現します。<br><br>
+                            余計な機能を削ぎ落とした、シンプルなインターフェース。<br>
+                            必要なときに、すぐ使える。
+                        </p>
+                        <div class="hero-action-group">
+                            <a href="https://apps.apple.com/" target="_blank" rel="noopener noreferrer" class="app-store-button">
+                                <span class="app-store-text">
+                                    <small>Download on the</small>
+                                    <strong>App Store</strong>
+                                </span>
+                            </a>
+                            <a href="./flashMorse/details.html" class="detail-button">詳細・スクリーンショット</a>
+                        </div>
+                    </div>
+                    <div class="hero-image">
+                        <div class="phone">
+                            <img src="img/flashMorse/home.png" alt="flashMorseのホーム画面">
+                        </div>
+                        <div class="app-tabs" aria-label="flashMorse information">
+                            <a class="app-tab" href="./flashMorse/support.html">Support</a>
+                            <a class="app-tab" href="privacyPolicy.html">Privacy Policy</a>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+            <!-- スライド2: やめ活 -->
+            <div class="hero-slide">
+                <div class="container hero-inner">
+                    <div class="hero-content">
+                        <div class="app-logo">
+                            <img src="img/yamekatsu/icon_light.jpg" alt="やめ活 アプリアイコン">
+                        </div>
+                        <span class="hero-label">iOS APPLICATION</span>
+                        <h1><span>やめ活</span></h1>
+                        <p class="hero-description">
+                            断ち切りたい悪習や、日々の習慣を直感的にトラッキング。<br>
+                            日々の記録を可視化し、目標達成をサポートする習慣化アプリです。<br><br>
+                            無駄を省いたシンプルなデザインで、<br>
+                            毎日の継続をストレスなく記録できます。
+                        </p>
+                        <div class="hero-action-group">
+                            <a href="https://apps.apple.com/" target="_blank" rel="noopener noreferrer" class="app-store-button">
+                                <span class="app-store-text">
+                                    <small>Download on the</small>
+                                    <strong>App Store</strong>
+                                </span>
+                            </a>
+                            <a href="./yamekatsu/details.html" class="detail-button">詳細・スクリーンショット</a>
+                        </div>
+                    </div>
+                    <div class="hero-image">
+                        <div class="phone">
+                            <img src="img/yamekatsu/home.jpeg" alt="やめ活のホーム画面" onerror="this.src='img/yamekatsu/home.jpeg'">
+                        </div>
+                        <div class="app-tabs" aria-label="やめ活 information">
+                            <a class="app-tab" href="./yamekatsu/support.html">Support</a>
+                            <a class="app-tab" href="./yamekatsu/privacy.html">Privacy Policy</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
-    </div>
+
+        <!-- 矢印ボタン追加箇所 -->
+        <button class="slider-arrow prev-arrow" aria-label="前のスライド">&#10094;</button>
+        <button class="slider-arrow next-arrow" aria-label="次のスライド">&#10095;</button>
+
+        <!-- スライドナビゲーション -->
+        <div class="slider-nav" id="sliderNav">
+            <div class="slider-dot active" data-index="0"></div>
+            <div class="slider-dot" data-index="1"></div>
+        </div>
+    </section>
+
+    <!-- 開発中・開発予定アプリ -->
+    <section id="apps" class="section apps">
+        <div class="container">
+
+            <div class="section-title">
+                <span class="label">Apps</span>
+                <h2>More Apps</h2>
+                <p>これからも、シンプルで使いやすいアプリを開発していきます。</p>
+            </div>
+
+            <div class="app-grid">
+
+                <article class="app-card">
+                    <div class="app-card-header">
+                        <img class="app-card-icon" src="img/flashMorse/icon.png" alt="flashMorse アプリアイコン">
+                        <div class="app-card-info">
+                            <div class="app-card-title-group">
+                                <div>
+                                    <span class="hero-label-development" font-size:15px;>iOS</span>
+                                    <h3>
+                                        <a href="./flashMorse/details.html" class="app-card-main-link">flashMorse</a>
+                                    </h3>
+                                    <span class="app-status">RELEASED</span>
+                                </div>
+                                <!-- <img src="img\appstore_blk.svg"> -->
+                                <a href="https://apps.apple.com/" target="_blank" rel="noopener noreferrer" class="app-store-button-development">
+                                    <span class="app-store-text-development">
+                                        <small>Download on the</small>
+                                        <strong>App Store</strong>
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <p>iPhoneのフラッシュライトを使って、文字を光のパターンとして表現するアプリです。</p>
+                </article>
+
+                <article class="app-card">
+                    <div class="app-card-header">
+                        <img class="app-card-icon" src="img/yamekatsu/icon_light.jpg" alt="levelupTODO アプリアイコン">
+                        <div>
+                            <h3>やめ活</h3>
+                            <span class="app-status">DEVELOPMENT</span>
+                        </div>
+                    </div>
+                    <p>日々の記録を可視化、目標達成をサポートする習慣化アプリです。</p>
+                </article>
+
+                <article class="app-card">
+                    <div class="app-card-header">
+                        <div class="app-card-icon"></div>
+                        <div>
+                            <h3>Coming Soon</h3>
+                            <span class="app-status">IDEA</span>
+                        </div>
+                    </div>
+                    <p>日常のちょっとした不便を解決できる、新しいアプリを企画・開発しています。</p>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- フッター -->
     <footer>
-        &copy; 2024 YUKUN's Collect | <a href="privacyPolicy.html">プライバシーポリシー</a>
+        <div class="container footer-inner">
+            <p class="copyright">© 2026 YUKUN'S Collect. All Rights Reserved.</p>
+        </div>
     </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const slides = document.querySelectorAll('.hero-slide');
+            const dots = document.querySelectorAll('.slider-dot');
+            let currentIndex = 0;
+            let slideInterval;
+            const intervalTime = 6000; // 6秒ごとに切り替え
+    
+            function goToSlide(index) {
+                slides[currentIndex].classList.remove('active');
+                dots[currentIndex].classList.remove('active');
+                
+                currentIndex = index;
+                
+                slides[currentIndex].classList.add('active');
+                dots[currentIndex].classList.add('active');
+            }
+    
+            function nextSlide() {
+                let nextIndex = currentIndex + 1;
+                if (nextIndex >= slides.length) {
+                    nextIndex = 0;
+                }
+                goToSlide(nextIndex);
+            }
+
+            // 前に戻る関数を追加
+            function prevSlide() {
+                let prevIndex = currentIndex - 1;
+                if (prevIndex < 0) {
+                    prevIndex = slides.length - 1;
+                }
+                goToSlide(prevIndex);
+            }
+    
+            function startSlideShow() {
+                slideInterval = setInterval(nextSlide, intervalTime);
+            }
+    
+            function resetSlideShow() {
+                clearInterval(slideInterval);
+                startSlideShow();
+            }
+    
+            // ドットのクリックイベント
+            dots.forEach(dot => {
+                dot.addEventListener('click', (e) => {
+                    const index = parseInt(e.target.getAttribute('data-index'));
+                    if(currentIndex !== index) {
+                        goToSlide(index);
+                        resetSlideShow();
+                    }
+                });
+            });
+
+            // 矢印ボタンのクリックイベントを追加
+            const prevBtn = document.querySelector('.prev-arrow');
+            const nextBtn = document.querySelector('.next-arrow');
+
+            if (prevBtn && nextBtn) {
+                prevBtn.addEventListener('click', () => {
+                    prevSlide();
+                    resetSlideShow();
+                });
+
+                nextBtn.addEventListener('click', () => {
+                    nextSlide();
+                    resetSlideShow();
+                });
+            }
+    
+            // スライドショー開始
+            startSlideShow();
+        });
+    </script>
 </body>
 </html>
