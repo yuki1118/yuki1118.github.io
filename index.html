@@ -3,14 +3,25 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-    <title>App Studio | アプリ開発者</title>
+    <title>YUKUN'S Collect | iOSアプリ開発</title>
+    <meta name="description" content="YUKUN'S Collectでは、iOSアプリを中心に、日常で繰り返し使いたくなるシンプルなアプリを開発しています。">
+    <meta name="theme-color" content="#f5f9fc">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="canonical" href="https://yuki1118.github.io/">
+    <link rel="apple-touch-icon" href="img/yamekatsu/icon-256.jpg">
 
-    <meta
-        name="description"
-        content="App Studioでは、iOSアプリを中心に、日常で繰り返し使いたくなるシンプルなアプリを開発しています。"
-    >
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="YUKUN'S Collect">
+    <meta property="og:title" content="YUKUN'S Collect | iOSアプリ開発">
+    <meta property="og:description" content="日常で繰り返し使いたくなる、シンプルなiOSアプリを開発しています。">
+    <meta property="og:url" content="https://yuki1118.github.io/">
+    <meta property="og:image" content="https://yuki1118.github.io/img/yamekatsu/icon-256.jpg">
+    <meta name="twitter:card" content="summary">
+
+    <!-- ヒーロー1枚目の画像を先読み -->
+    <link rel="preload" as="image" href="img/flashMorse/home-600.jpg" fetchpriority="high">
 
     <style>
         :root {
@@ -18,20 +29,35 @@
             --surface-color: #ffffff;
             --text-color: #172033;
             --sub-text-color: #667085;
+            --muted-text-color: #475467;
             --primary-color: #2563eb;
             --primary-soft: #eaf2ff;
             --border-color: #e2e8f0;
+            --dark-color: #111827;
             --max-width: 1160px;
+            --gutter: max(20px, 5vw);
+            --safe-left: env(safe-area-inset-left, 0px);
+            --safe-right: env(safe-area-inset-right, 0px);
+            color-scheme: light;
         }
 
-        * {
+        *,
+        *::before,
+        *::after {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
 
         html {
-            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+
+        @media (prefers-reduced-motion: no-preference) {
+            html {
+                scroll-behavior: smooth;
+            }
         }
 
         body {
@@ -47,6 +73,8 @@
             background: var(--bg-color);
             line-height: 1.7;
             -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
+            overflow-x: clip;
         }
 
         a {
@@ -56,34 +84,56 @@
 
         img {
             max-width: 100%;
+            height: auto;
             display: block;
         }
 
+        button {
+            font: inherit;
+            color: inherit;
+            background: none;
+            border: 0;
+            cursor: pointer;
+        }
+
+        :focus-visible {
+            outline: 3px solid var(--primary-color);
+            outline-offset: 3px;
+        }
+
         .container {
-            width: min(90%, var(--max-width));
-            margin: 0 auto;
+            width: min(100% - var(--gutter) * 2 - var(--safe-left) - var(--safe-right), var(--max-width));
+            margin-inline: auto;
         }
 
         .section {
-            padding: 120px 0;
+            padding-block: 120px;
+        }
+
+        /* 日本語の改行位置を文節単位に（対応ブラウザのみ） */
+        h1,
+        h2,
+        h3,
+        p {
+            line-break: strict;
+            word-break: auto-phrase;
+            text-wrap: pretty;
         }
 
         /* ========================================
            ヘッダー
         ======================================== */
-        header {
+        .site-header {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
+            inset: 0 0 auto;
             z-index: 100;
-            padding: 14px 0;
+            padding: max(14px, env(safe-area-inset-top, 0px)) 0 14px;
         }
 
         .header-inner {
-            width: min(92%, var(--max-width));
+            width: min(100% - 32px - var(--safe-left) - var(--safe-right), var(--max-width));
             min-height: 64px;
-            margin: 0 auto;
+            margin-inline: auto;
             padding: 8px 10px 8px 22px;
             display: flex;
             align-items: center;
@@ -100,40 +150,38 @@
             font-size: 17px;
             font-weight: 800;
             letter-spacing: 0.02em;
+            white-space: nowrap;
         }
 
         .logo span {
             color: var(--primary-color);
         }
 
-        nav {
+        .site-nav {
             display: flex;
             align-items: center;
             gap: 6px;
         }
 
-        nav a {
+        .site-nav a {
             padding: 9px 17px;
             border-radius: 999px;
-            color: #475467;
+            color: var(--muted-text-color);
             font-size: 13px;
             font-weight: 700;
-            transition: 0.2s ease;
-        }
-
-        nav a:hover {
-            color: var(--text-color);
-            background: var(--primary-soft);
+            transition: color 0.2s ease, background-color 0.2s ease;
         }
 
         /* ========================================
-           ヒーロー (スライドショー対応)
+           ヒーロー（スライドショー）
         ======================================== */
         .hero {
             position: relative;
             min-height: 860px;
+            padding: 120px 0 80px; /* 固定ヘッダーの下から始める */
             display: flex;
-            align-items: center;
+            flex-direction: column;
+            justify-content: center;
             overflow: hidden;
             background:
                 radial-gradient(circle at 82% 28%, rgba(37, 99, 235, 0.13), transparent 29%),
@@ -165,31 +213,25 @@
             border: 1px solid rgba(6, 182, 212, 0.08);
         }
 
+        /* 全スライドを同じセルに重ねる（高さは一番高いスライドに揃い、切り替えでガタつかない） */
         .hero-slider {
-            position: relative;
+            display: grid;
             width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
+            touch-action: pan-y;
         }
 
         .hero-slide {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            grid-area: 1 / 1;
+            display: flex;
+            align-items: center;
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.6s ease-in-out, visibility 0.6s ease-in-out;
-            display: flex;
-            align-items: center;
         }
 
-        .hero-slide.active {
+        .hero-slide.is-active {
             opacity: 1;
             visibility: visible;
-            position: relative;
         }
 
         .hero-inner {
@@ -206,18 +248,15 @@
         }
 
         .app-logo {
-            margin-bottom: 28px;
-        }
-
-        .app-logo img {
             width: 82px;
             height: 82px;
+            margin-bottom: 28px;
             border-radius: 22px;
             object-fit: cover;
             box-shadow: 0 18px 45px rgba(15, 23, 42, 0.14);
         }
 
-        .hero-label {
+        .label-pill {
             display: inline-flex;
             align-items: center;
             min-height: 30px;
@@ -232,13 +271,10 @@
         }
 
         .hero h1 {
-            font-size: clamp(48px, 7vw, 82px);
+            font-size: clamp(42px, 7vw, 82px);
             line-height: 1.04;
             letter-spacing: -0.055em;
             font-weight: 800;
-        }
-
-        .hero h1 span {
             color: var(--primary-color);
         }
 
@@ -248,6 +284,10 @@
             color: var(--sub-text-color);
             font-size: 16px;
             line-height: 2;
+        }
+
+        .hero-description + .hero-description {
+            margin-top: 1em;
         }
 
         .hero-action-group {
@@ -264,15 +304,17 @@
             gap: 12px;
             padding: 14px 23px;
             color: #ffffff;
-            background: #111827;
+            background: var(--dark-color);
             border-radius: 999px;
             box-shadow: 0 12px 25px rgba(15, 23, 42, 0.13);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
-        .app-store-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 18px 32px rgba(15, 23, 42, 0.18);
+        .app-store-button svg {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            fill: currentColor;
         }
 
         .app-store-text small {
@@ -289,9 +331,29 @@
             line-height: 1;
         }
 
+        /* カード内の小さい App Store ボタン */
+        .app-store-button.is-small {
+            position: relative;
+            z-index: 2; /* カード全体のリンクより前面に置き、個別にタップできるようにする */
+            flex-shrink: 0;
+            gap: 7px;
+            padding: 7px 13px;
+        }
+
+        .app-store-button.is-small svg {
+            width: 15px;
+            height: 15px;
+        }
+
+        .app-store-button.is-small .app-store-text strong {
+            margin-top: 2px;
+            font-size: 11px;
+        }
+
         .detail-button {
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             padding: 14px 28px;
             color: var(--text-color);
             background: rgba(255, 255, 255, 0.9);
@@ -300,15 +362,7 @@
             font-weight: 700;
             font-size: 15px;
             box-shadow: 0 4px 15px rgba(15, 23, 42, 0.05);
-            transition: all 0.2s ease;
-        }
-
-        .detail-button:hover {
-            background: var(--surface-color);
-            border-color: var(--primary-color);
-            color: var(--primary-color);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.1);
+            transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         .hero-image {
@@ -322,7 +376,7 @@
             width: 275px;
             padding: 10px;
             border-radius: 42px;
-            background: #111827;
+            background: var(--dark-color);
             box-shadow: 0 38px 80px rgba(15, 23, 42, 0.22);
             transform: rotate(2deg);
         }
@@ -355,15 +409,10 @@
             justify-content: center;
             gap: 8px;
             border-radius: 999px;
-            color: #475467;
+            color: var(--muted-text-color);
             font-size: 13px;
             font-weight: 700;
-            transition: 0.2s ease;
-        }
-
-        .app-tab:hover {
-            color: var(--primary-color);
-            background: var(--primary-soft);
+            transition: color 0.2s ease, background-color 0.2s ease;
         }
 
         .app-tab::after {
@@ -372,68 +421,72 @@
             transition: transform 0.2s ease;
         }
 
-        .app-tab:hover::after {
-            transform: translateX(3px);
-        }
-
         /* ========================================
-           スライダー矢印ナビゲーション
+           スライダー操作（矢印・ドット）
         ======================================== */
         .slider-arrow {
             position: absolute;
             top: 50%;
-            transform: translateY(-50%);
+            z-index: 10;
             width: 48px;
             height: 48px;
+            display: grid;
+            place-items: center;
             background: rgba(255, 255, 255, 0.6);
             border: 1px solid rgba(226, 232, 240, 0.8);
             border-radius: 50%;
             color: var(--sub-text-color);
-            font-size: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 10;
-            transition: all 0.3s ease;
+            translate: 0 -50%;
+            transition: color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
         }
 
-        .slider-arrow:hover {
-            background: rgba(255, 255, 255, 0.95);
-            color: var(--primary-color);
-            box-shadow: 0 4px 15px rgba(15, 23, 42, 0.08);
+        .slider-arrow svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
 
         .prev-arrow {
-            left: 24px;
+            left: calc(24px + var(--safe-left));
         }
 
         .next-arrow {
-            right: 24px;
+            right: calc(24px + var(--safe-right));
         }
 
         .slider-nav {
             position: absolute;
             bottom: 40px;
             left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 12px;
             z-index: 10;
+            display: flex;
+            translate: -50% 0;
         }
 
+        /* 見た目は10pxの点、タップ領域は30px確保 */
         .slider-dot {
+            width: 30px;
+            height: 30px;
+            display: grid;
+            place-items: center;
+        }
+
+        .slider-dot::before {
+            content: "";
             width: 10px;
             height: 10px;
             border-radius: 50%;
             background: rgba(37, 99, 235, 0.2);
-            cursor: pointer;
-            transition: all 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.3s ease;
         }
 
-        .slider-dot.active {
+        .slider-dot[aria-current="true"]::before {
             background: var(--primary-color);
             transform: scale(1.3);
         }
@@ -471,20 +524,16 @@
         }
 
         /* ========================================
-           開発アプリ
+           アプリ一覧
         ======================================== */
-        .apps {
-            background: var(--bg-color);
-        }
-
         .app-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
             gap: 20px;
         }
 
         .app-card {
-            position: relative; /* 疑似要素リンクの基準位置 */
+            position: relative; /* カード全体リンク（疑似要素）の基準 */
             min-height: 212px;
             padding: 30px;
             display: flex;
@@ -497,11 +546,6 @@
             transition: transform 0.25s ease, box-shadow 0.25s ease;
         }
 
-        .app-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 22px 45px rgba(15, 23, 42, 0.09);
-        }
-
         .app-card-header {
             display: flex;
             align-items: center;
@@ -511,24 +555,26 @@
         .app-card-info {
             flex: 1;
             min-width: 0;
-        }
-
-        .app-card-title-group {
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 10px;
         }
 
-        /* タイトルリンクを疑似要素でカード全体に広げる */
+        .app-card .label-pill {
+            min-height: 24px;
+            margin-bottom: 6px;
+            padding: 3px 10px;
+            font-size: 10px;
+        }
+
+        /* タイトルのリンクをカード全体に広げる */
         .app-card-main-link::after {
             content: "";
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            inset: 0;
             z-index: 1;
+            border-radius: inherit;
         }
 
         .app-card-icon {
@@ -537,12 +583,13 @@
             flex-shrink: 0;
             border-radius: 18px;
             object-fit: cover;
-            background: #e2e8f0;
+            background: var(--border-color);
         }
 
         .app-card h3 {
             font-size: 19px;
             font-weight: 800;
+            line-height: 1.4;
         }
 
         .app-status {
@@ -561,150 +608,165 @@
             line-height: 1.9;
         }
 
-        .app-store-button-development {
-            position: relative;
-            z-index: 2; /* カード全体のリンクより前面に配置して個別クリック可能に */
-            flex-shrink: 0;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 5px 12px;
-            color: #ffffff;
-            background: #111827;
-            border-radius: 999px;
-            box-shadow: 0 12px 25px rgba(15, 23, 42, 0.13);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .app-store-button-development:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 18px 32px rgba(15, 23, 42, 0.18);
-        }
-
-        .app-store-text-development small {
-            display: block;
-            font-size: 9px;
-            line-height: 1;
-            opacity: 0.8;
-        }
-
-        .app-store-text-development strong {
-            display: block;
-            margin-top: 2px;
-            font-size: 11px;
-            line-height: 1;
-        }
-
-        .hero-label-development {
-            display: inline-flex;
-            align-items: center;
-            min-height: 30px;
-            margin-bottom: 18px;
-            padding: 5px 13px;
-            border-radius: 999px;
-            background: var(--primary-soft);
-            color: var(--primary-color);
-            font-size: 11px;
-            font-weight: 800;
-            letter-spacing: 0.14em;
-        }
         /* ========================================
            フッター
         ======================================== */
-        footer {
-            padding: 50px 0;
+        .site-footer {
+            padding: 50px 0 max(50px, env(safe-area-inset-bottom, 0px));
             background: #0b1120;
             color: #94a3b8;
-        }
-
-        .footer-inner {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 30px;
         }
 
         .copyright {
             font-size: 12px;
         }
 
-        .footer-links {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+        /* ========================================
+           ホバー（マウス操作の端末だけ。スマホでホバー状態が残るのを防ぐ）
+        ======================================== */
+        @media (hover: hover) {
+            .site-nav a:hover {
+                color: var(--text-color);
+                background: var(--primary-soft);
+            }
 
-        .footer-links a {
-            padding: 8px 13px;
-            border: 1px solid rgba(148, 163, 184, 0.2);
-            border-radius: 999px;
-            font-size: 11px;
-            transition: 0.2s ease;
-        }
+            .app-store-button:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 18px 32px rgba(15, 23, 42, 0.18);
+            }
 
-        .footer-links a:hover {
-            color: #ffffff;
-            border-color: rgba(255, 255, 255, 0.5);
-            background: rgba(255, 255, 255, 0.06);
+            .detail-button:hover {
+                background: var(--surface-color);
+                border-color: var(--primary-color);
+                color: var(--primary-color);
+                transform: translateY(-2px);
+                box-shadow: 0 8px 20px rgba(37, 99, 235, 0.1);
+            }
+
+            .app-tab:hover {
+                color: var(--primary-color);
+                background: var(--primary-soft);
+            }
+
+            .app-tab:hover::after {
+                transform: translateX(3px);
+            }
+
+            .slider-arrow:hover {
+                background: rgba(255, 255, 255, 0.95);
+                color: var(--primary-color);
+                box-shadow: 0 4px 15px rgba(15, 23, 42, 0.08);
+            }
+
+            .app-card:hover {
+                transform: translateY(-6px);
+                box-shadow: 0 22px 45px rgba(15, 23, 42, 0.09);
+            }
         }
 
         /* ========================================
-           スマートフォン
+           タブレット・スマートフォン
         ======================================== */
+        /* 左右に矢印を置く余白がない幅では、矢印とドットをスライドの下に1列で並べる（本文との重なり防止） */
+        @media (max-width: 1319px) {
+            .hero {
+                padding-bottom: 48px;
+            }
+
+            .slider-controls {
+                position: relative;
+                z-index: 10;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 12px;
+                margin-top: 36px;
+            }
+
+            .slider-arrow,
+            .slider-nav {
+                position: static;
+                translate: none;
+            }
+
+            .slider-arrow {
+                width: 44px;
+                height: 44px;
+                background: rgba(255, 255, 255, 0.85);
+            }
+        }
+
+        @media (max-width: 900px) {
+            .hero-inner {
+                gap: 32px;
+            }
+
+            .phone {
+                width: 240px;
+            }
+        }
+
         @media (max-width: 768px) {
-            header {
-                padding: 10px 0;
+            .site-header {
+                padding-block-end: 10px;
+                padding-top: max(10px, env(safe-area-inset-top, 0px));
             }
 
             .header-inner {
-                padding-left: 18px;
-            }
-
-            nav {
-                display: none;
+                min-height: 56px;
+                padding-left: 20px;
             }
 
             .section {
-                padding: 90px 0;
+                padding-block: 88px;
             }
 
             .hero {
                 min-height: auto;
-                padding: 145px 0 90px;
+                padding: 130px 0 32px;
             }
 
             .hero-inner {
                 grid-template-columns: 1fr;
-                gap: 55px;
+                gap: 44px;
                 text-align: center;
             }
 
             .hero-content {
-                margin: 0 auto;
+                margin-inline: auto;
             }
 
-            .app-logo img {
+            .app-logo {
                 width: 76px;
                 height: 76px;
-                margin: 0 auto;
+                margin-inline: auto;
             }
 
             .hero-description {
-                margin-right: auto;
-                margin-left: auto;
+                margin-inline: auto;
+                margin-top: 24px;
                 font-size: 15px;
+                line-height: 1.9;
+            }
+
+            /* 手動改行は広い画面用。スマホでは自然に折り返す */
+            .hero-description br {
+                display: none;
             }
 
             .hero-action-group {
                 justify-content: center;
-            }
-
-            .hero-image {
-                order: 2;
+                margin-top: 32px;
             }
 
             .phone {
                 width: 220px;
+                border-radius: 36px;
+                padding: 8px;
+            }
+
+            .phone img {
+                border-radius: 29px;
             }
 
             .app-tabs {
@@ -712,55 +774,58 @@
                 margin-top: 28px;
             }
 
-            .app-grid {
-                grid-template-columns: 1fr;
+            .section-title {
+                margin-bottom: 44px;
             }
 
             .app-card {
                 min-height: auto;
+                padding: 24px;
+                border-radius: 24px;
             }
 
-            .footer-inner {
+            .app-card p {
+                margin-top: 20px;
+            }
+
+            /* スマホでは App Store ボタンをタイトルの下にそろえる */
+            .app-card-info {
                 flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .site-footer {
                 text-align: center;
-            }
-
-            .slider-arrow {
-                width: 36px;
-                height: 36px;
-                font-size: 16px;
-            }
-
-            .prev-arrow {
-                left: 10px;
-            }
-
-            .next-arrow {
-                right: 10px;
             }
         }
 
         @media (max-width: 480px) {
-            .container {
-                width: min(88%, var(--max-width));
+            .logo {
+                font-size: 16px;
             }
 
-            .hero h1 {
-                font-size: 48px;
+            .hero {
+                padding-top: 118px;
             }
 
             .hero-description {
-                font-size: 14px;
+                font-size: 14.5px;
             }
 
             .hero-action-group {
                 flex-direction: column;
+                align-items: stretch;
                 gap: 12px;
+                width: min(100%, 320px);
+                margin-inline: auto;
             }
 
-            .detail-button {
-                width: 100%;
+            .app-store-button {
                 justify-content: center;
+            }
+
+            .phone {
+                width: 200px;
             }
 
             .app-tabs {
@@ -771,10 +836,13 @@
             .app-tab {
                 min-height: 44px;
             }
+        }
 
-            .footer-links {
-                flex-wrap: wrap;
-                justify-content: center;
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                transition-duration: 0.01ms !important;
             }
         }
     </style>
@@ -782,254 +850,271 @@
 
 <body>
 
-    <!-- ヘッダー -->
-    <header>
-        <div class="header-inner">
-            <a href="index.html" class="logo">
-                YUKUN'S <span>Collect</span>
-            </a>
+    <!-- App Store アイコン（各ボタンで再利用） -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <symbol id="icon-apple" viewBox="0 0 24 24">
+            <path d="M16.37 12.74c-.02-2.2 1.8-3.26 1.88-3.31-1.03-1.5-2.62-1.7-3.18-1.72-1.35-.14-2.64.8-3.33.8-.69 0-1.74-.78-2.87-.76-1.47.02-2.83.86-3.59 2.18-1.53 2.66-.39 6.6 1.1 8.75.73 1.05 1.6 2.24 2.73 2.2 1.1-.05 1.51-.71 2.84-.71 1.32 0 1.7.71 2.86.69 1.18-.02 1.93-1.07 2.65-2.13.84-1.22 1.18-2.4 1.2-2.46-.03-.01-2.3-.88-2.32-3.5zM14.2 6.29c.6-.73 1.01-1.75.9-2.76-.87.04-1.92.58-2.54 1.31-.56.65-1.05 1.69-.92 2.68.97.08 1.96-.49 2.56-1.23z"/>
+        </symbol>
+    </svg>
 
-            <nav>
-                <a href="https://note.com/ctrl_c_v_soumu" target="_blank" rel="noopener noreferrer">Blog</a>
+    <!-- ヘッダー -->
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="./" class="logo">YUKUN'S <span>Collect</span></a>
+            <nav class="site-nav" aria-label="サイト">
+                <a href="https://note.com/ctrl_c_v_soumu" target="_blank" rel="noopener">Blog</a>
             </nav>
         </div>
     </header>
 
-    <!-- ヒーロー (スライドショー) -->
-    <section class="hero">
-        <div class="hero-slider" id="heroSlider">
-            
-            <!-- スライド1: flashMorse -->
-            <div class="hero-slide active">
-                <div class="container hero-inner">
-                    <div class="hero-content">
-                        <div class="app-logo">
-                            <img src="img/flashMorse/icon.png" alt="flashMorse アプリアイコン">
-                        </div>
-                        <span class="hero-label">iOS APPLICATION</span>
-                        <h1><span>flashMorse</span></h1>
-                        <p class="hero-description">
-                            入力したテキストを、モールス信号へ。<br>
-                            iPhoneのフラッシュライトを使って、文字を光のパターンとして表現します。<br><br>
-                            余計な機能を削ぎ落とした、シンプルなインターフェース。<br>
-                            必要なときに、すぐ使える。
-                        </p>
-                        <div class="hero-action-group">
-                            <a href="https://apps.apple.com/" target="_blank" rel="noopener noreferrer" class="app-store-button">
-                                <span class="app-store-text">
-                                    <small>Download on the</small>
-                                    <strong>App Store</strong>
-                                </span>
-                            </a>
-                            <a href="./flashMorse/details.html" class="detail-button">詳細・スクリーンショット</a>
-                        </div>
-                    </div>
-                    <div class="hero-image">
-                        <div class="phone">
-                            <img src="img/flashMorse/home.png" alt="flashMorseのホーム画面">
-                        </div>
-                        <div class="app-tabs" aria-label="flashMorse information">
-                            <a class="app-tab" href="./flashMorse/support.html">Support</a>
-                            <a class="app-tab" href="privacyPolicy.html">Privacy Policy</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <main>
+        <!-- ヒーロー（スライドショー） -->
+        <section class="hero" aria-roledescription="carousel" aria-label="アプリ紹介" data-slider>
+            <div class="hero-slider">
 
-            <!-- スライド2: やめ活 -->
-            <div class="hero-slide">
-                <div class="container hero-inner">
-                    <div class="hero-content">
-                        <div class="app-logo">
-                            <img src="img/yamekatsu/icon_light.jpg" alt="やめ活 アプリアイコン">
+                <!-- スライド1: flashMorse -->
+                <div class="hero-slide is-active" role="group" aria-roledescription="slide" aria-label="1 / 2">
+                    <div class="container hero-inner">
+                        <div class="hero-content">
+                            <img class="app-logo" src="img/flashMorse/icon-256.jpg" alt="flashMorse アプリアイコン" width="82" height="82">
+                            <span class="label-pill">iOS APPLICATION</span>
+                            <h1>flashMorse</h1>
+                            <p class="hero-description">
+                                入力したテキストを、モールス信号へ。<br>
+                                iPhoneのフラッシュライトを使って、文字を光のパターンとして表現します。
+                            </p>
+                            <p class="hero-description">
+                                余計な機能を削ぎ落とした、シンプルなインターフェース。<br>
+                                必要なときに、すぐ使える。
+                            </p>
+                            <div class="hero-action-group">
+                                <a href="https://apps.apple.com/jp/app/id6738281439" target="_blank" rel="noopener" class="app-store-button">
+                                    <svg aria-hidden="true"><use href="#icon-apple"></use></svg>
+                                    <span class="app-store-text">
+                                        <small>Download on the</small>
+                                        <strong>App Store</strong>
+                                    </span>
+                                </a>
+                                <a href="./flashMorse/details.html" class="detail-button">詳細・スクリーンショット</a>
+                            </div>
                         </div>
-                        <span class="hero-label">iOS APPLICATION</span>
-                        <h1><span>やめ活</span></h1>
-                        <p class="hero-description">
-                            断ち切りたい悪習や、日々の習慣を直感的にトラッキング。<br>
-                            日々の記録を可視化し、目標達成をサポートする習慣化アプリです。<br><br>
-                            無駄を省いたシンプルなデザインで、<br>
-                            毎日の継続をストレスなく記録できます。
-                        </p>
-                        <div class="hero-action-group">
-                            <a href="https://apps.apple.com/" target="_blank" rel="noopener noreferrer" class="app-store-button">
-                                <span class="app-store-text">
-                                    <small>Download on the</small>
-                                    <strong>App Store</strong>
-                                </span>
-                            </a>
-                            <a href="./yamekatsu/details.html" class="detail-button">詳細・スクリーンショット</a>
-                        </div>
-                    </div>
-                    <div class="hero-image">
-                        <div class="phone">
-                            <img src="img/yamekatsu/home.jpeg" alt="やめ活のホーム画面" onerror="this.src='img/yamekatsu/home.jpeg'">
-                        </div>
-                        <div class="app-tabs" aria-label="やめ活 information">
-                            <a class="app-tab" href="./yamekatsu/support.html">Support</a>
-                            <a class="app-tab" href="./yamekatsu/privacy.html">Privacy Policy</a>
+                        <div class="hero-image">
+                            <div class="phone">
+                                <img src="img/flashMorse/home-600.jpg" alt="flashMorseのホーム画面" width="600" height="1303" fetchpriority="high" decoding="async">
+                            </div>
+                            <nav class="app-tabs" aria-label="flashMorse の情報">
+                                <a class="app-tab" href="./flashMorse/support.html">Support</a>
+                                <a class="app-tab" href="./privacyPolicy.html">Privacy Policy</a>
+                            </nav>
                         </div>
                     </div>
                 </div>
+
+                <!-- スライド2: やめ活 -->
+                <div class="hero-slide" role="group" aria-roledescription="slide" aria-label="2 / 2" inert>
+                    <div class="container hero-inner">
+                        <div class="hero-content">
+                            <img class="app-logo" src="img/yamekatsu/icon-256.jpg" alt="やめ活 アプリアイコン" width="82" height="82" loading="lazy">
+                            <span class="label-pill">iOS APPLICATION</span>
+                            <h1>やめ活</h1>
+                            <p class="hero-description">
+                                断ち切りたい悪習や、日々の習慣を直感的にトラッキング。<br>
+                                日々の記録を可視化し、目標達成をサポートする習慣化アプリです。
+                            </p>
+                            <p class="hero-description">
+                                無駄を省いたシンプルなデザインで、<br>
+                                毎日の継続をストレスなく記録できます。
+                            </p>
+                            <div class="hero-action-group">
+                                <a href="https://apps.apple.com/jp/app/id6816400389" target="_blank" rel="noopener" class="app-store-button">
+                                    <svg aria-hidden="true"><use href="#icon-apple"></use></svg>
+                                    <span class="app-store-text">
+                                        <small>Download on the</small>
+                                        <strong>App Store</strong>
+                                    </span>
+                                </a>
+                                <a href="./yamekatsu/details.html" class="detail-button">詳細・スクリーンショット</a>
+                            </div>
+                        </div>
+                        <div class="hero-image">
+                            <div class="phone">
+                                <img src="img/yamekatsu/home-600.jpg" alt="やめ活のホーム画面" width="600" height="1304" loading="lazy" decoding="async">
+                            </div>
+                            <nav class="app-tabs" aria-label="やめ活 の情報">
+                                <a class="app-tab" href="./yamekatsu/support.html">Support</a>
+                                <a class="app-tab" href="./yamekatsu/privacy.html">Privacy Policy</a>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
-        </div>
-
-        <!-- 矢印ボタン追加箇所 -->
-        <button class="slider-arrow prev-arrow" aria-label="前のスライド">&#10094;</button>
-        <button class="slider-arrow next-arrow" aria-label="次のスライド">&#10095;</button>
-
-        <!-- スライドナビゲーション -->
-        <div class="slider-nav" id="sliderNav">
-            <div class="slider-dot active" data-index="0"></div>
-            <div class="slider-dot" data-index="1"></div>
-        </div>
-    </section>
-
-    <!-- 開発中・開発予定アプリ -->
-    <section id="apps" class="section apps">
-        <div class="container">
-
-            <div class="section-title">
-                <span class="label">Apps</span>
-                <h2>More Apps</h2>
-                <p>これからも、シンプルで使いやすいアプリを開発していきます。</p>
+            <div class="slider-controls">
+                <button type="button" class="slider-arrow prev-arrow" aria-label="前のアプリ" data-slider-prev>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+                </button>
+                <div class="slider-nav">
+                    <button type="button" class="slider-dot" aria-label="flashMorse" aria-current="true"></button>
+                    <button type="button" class="slider-dot" aria-label="やめ活" aria-current="false"></button>
+                </div>
+                <button type="button" class="slider-arrow next-arrow" aria-label="次のアプリ" data-slider-next>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+                </button>
             </div>
+        </section>
 
-            <div class="app-grid">
+        <!-- アプリ一覧 -->
+        <section id="apps" class="section">
+            <div class="container">
 
-                <article class="app-card">
-                    <div class="app-card-header">
-                        <img class="app-card-icon" src="img/flashMorse/icon.png" alt="flashMorse アプリアイコン">
-                        <div class="app-card-info">
-                            <div class="app-card-title-group">
+                <div class="section-title">
+                    <span class="label">Apps</span>
+                    <h2>More Apps</h2>
+                    <p>これからも、シンプルで使いやすいアプリを開発していきます。</p>
+                </div>
+
+                <div class="app-grid">
+
+                    <article class="app-card">
+                        <div class="app-card-header">
+                            <img class="app-card-icon" src="img/flashMorse/icon-256.jpg" alt="" width="64" height="64" loading="lazy" decoding="async">
+                            <div class="app-card-info">
                                 <div>
-                                    <span class="hero-label-development" font-size:15px;>iOS</span>
-                                    <h3>
-                                        <a href="./flashMorse/details.html" class="app-card-main-link">flashMorse</a>
-                                    </h3>
+                                    <span class="label-pill">iOS</span>
+                                    <h3><a href="./flashMorse/details.html" class="app-card-main-link">flashMorse</a></h3>
                                     <span class="app-status">RELEASED</span>
                                 </div>
-                                <!-- <img src="img\appstore_blk.svg"> -->
-                                <a href="https://apps.apple.com/" target="_blank" rel="noopener noreferrer" class="app-store-button-development">
-                                    <span class="app-store-text-development">
+                                <a href="https://apps.apple.com/jp/app/id6738281439" target="_blank" rel="noopener" class="app-store-button is-small" aria-label="flashMorse を App Store で見る">
+                                    <svg aria-hidden="true"><use href="#icon-apple"></use></svg>
+                                    <span class="app-store-text">
                                         <small>Download on the</small>
                                         <strong>App Store</strong>
                                     </span>
                                 </a>
                             </div>
                         </div>
-                    </div>
-                    <p>iPhoneのフラッシュライトを使って、文字を光のパターンとして表現するアプリです。</p>
-                </article>
+                        <p>iPhoneのフラッシュライトを使って、文字を光のパターンとして表現するアプリです。</p>
+                    </article>
 
-                <article class="app-card">
-                    <div class="app-card-header">
-                        <img class="app-card-icon" src="img/yamekatsu/icon_light.jpg" alt="levelupTODO アプリアイコン">
-                        <div>
-                            <h3>やめ活</h3>
-                            <span class="app-status">DEVELOPMENT</span>
+                    <article class="app-card">
+                        <div class="app-card-header">
+                            <img class="app-card-icon" src="img/yamekatsu/icon-256.jpg" alt="" width="64" height="64" loading="lazy" decoding="async">
+                            <div class="app-card-info">
+                                <div>
+                                    <span class="label-pill">iOS</span>
+                                    <h3><a href="./yamekatsu/details.html" class="app-card-main-link">やめ活</a></h3>
+                                    <span class="app-status">RELEASED</span>
+                                </div>
+                                <a href="https://apps.apple.com/jp/app/id6816400389" target="_blank" rel="noopener" class="app-store-button is-small" aria-label="やめ活 を App Store で見る">
+                                    <svg aria-hidden="true"><use href="#icon-apple"></use></svg>
+                                    <span class="app-store-text">
+                                        <small>Download on the</small>
+                                        <strong>App Store</strong>
+                                    </span>
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                    <p>日々の記録を可視化、目標達成をサポートする習慣化アプリです。</p>
-                </article>
+                        <p>日々の記録を可視化し、目標達成をサポートする習慣化アプリです。</p>
+                    </article>
 
-                <article class="app-card">
-                    <div class="app-card-header">
-                        <div class="app-card-icon"></div>
-                        <div>
-                            <h3>Coming Soon</h3>
-                            <span class="app-status">IDEA</span>
+                    <article class="app-card">
+                        <div class="app-card-header">
+                            <div class="app-card-icon" aria-hidden="true"></div>
+                            <div class="app-card-info">
+                                <div>
+                                    <h3>Coming Soon</h3>
+                                    <span class="app-status">IDEA</span>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <p>日常のちょっとした不便を解決できる、新しいアプリを企画・開発しています。</p>
-                </article>
+                        <p>日常のちょっとした不便を解決できる、新しいアプリを企画・開発しています。</p>
+                    </article>
 
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
     <!-- フッター -->
-    <footer>
-        <div class="container footer-inner">
+    <footer class="site-footer">
+        <div class="container">
             <p class="copyright">© 2026 YUKUN'S Collect. All Rights Reserved.</p>
         </div>
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const slides = document.querySelectorAll('.hero-slide');
-            const dots = document.querySelectorAll('.slider-dot');
-            let currentIndex = 0;
-            let slideInterval;
-            const intervalTime = 6000; // 6秒ごとに切り替え
-    
-            function goToSlide(index) {
-                slides[currentIndex].classList.remove('active');
-                dots[currentIndex].classList.remove('active');
-                
-                currentIndex = index;
-                
-                slides[currentIndex].classList.add('active');
-                dots[currentIndex].classList.add('active');
-            }
-    
-            function nextSlide() {
-                let nextIndex = currentIndex + 1;
-                if (nextIndex >= slides.length) {
-                    nextIndex = 0;
-                }
-                goToSlide(nextIndex);
-            }
+        (() => {
+            const root = document.querySelector('[data-slider]');
+            if (!root) return;
 
-            // 前に戻る関数を追加
-            function prevSlide() {
-                let prevIndex = currentIndex - 1;
-                if (prevIndex < 0) {
-                    prevIndex = slides.length - 1;
-                }
-                goToSlide(prevIndex);
-            }
-    
-            function startSlideShow() {
-                slideInterval = setInterval(nextSlide, intervalTime);
-            }
-    
-            function resetSlideShow() {
-                clearInterval(slideInterval);
-                startSlideShow();
-            }
-    
-            // ドットのクリックイベント
-            dots.forEach(dot => {
-                dot.addEventListener('click', (e) => {
-                    const index = parseInt(e.target.getAttribute('data-index'));
-                    if(currentIndex !== index) {
-                        goToSlide(index);
-                        resetSlideShow();
-                    }
+            const slides = [...root.querySelectorAll('.hero-slide')];
+            const dots = [...root.querySelectorAll('.slider-dot')];
+            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+            const INTERVAL = 6000; // 6秒ごとに切り替え
+            const SWIPE_THRESHOLD = 50;
+            let current = 0;
+            let timer = null;
+
+            const show = (index) => {
+                current = (index + slides.length) % slides.length;
+                slides.forEach((slide, i) => {
+                    const active = i === current;
+                    slide.classList.toggle('is-active', active);
+                    slide.inert = !active; // 非表示スライドのリンクにフォーカスが行かないように
                 });
+                dots.forEach((dot, i) => dot.setAttribute('aria-current', String(i === current)));
+            };
+
+            const stop = () => {
+                clearInterval(timer);
+                timer = null;
+            };
+
+            const start = () => {
+                stop();
+                if (!reduceMotion.matches && !document.hidden) {
+                    timer = setInterval(() => show(current + 1), INTERVAL);
+                }
+            };
+
+            // 手動で動かしたらタイマーをリセット
+            const go = (index) => {
+                show(index);
+                start();
+            };
+
+            root.querySelector('[data-slider-prev]').addEventListener('click', () => go(current - 1));
+            root.querySelector('[data-slider-next]').addEventListener('click', () => go(current + 1));
+            dots.forEach((dot, i) => dot.addEventListener('click', () => go(i)));
+
+            // スマホの左右スワイプ
+            let startX = 0;
+            let startY = 0;
+            root.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+            }, { passive: true });
+            root.addEventListener('touchend', (e) => {
+                const dx = e.changedTouches[0].clientX - startX;
+                const dy = e.changedTouches[0].clientY - startY;
+                if (Math.abs(dx) > SWIPE_THRESHOLD && Math.abs(dx) > Math.abs(dy)) {
+                    go(current + (dx < 0 ? 1 : -1));
+                }
+            }, { passive: true });
+
+            // マウスを乗せている間・操作中・タブが裏にある間は止める
+            root.addEventListener('mouseenter', stop);
+            root.addEventListener('mouseleave', start);
+            root.addEventListener('focusin', stop);
+            root.addEventListener('focusout', (e) => {
+                if (!root.contains(e.relatedTarget)) start();
             });
+            document.addEventListener('visibilitychange', () => (document.hidden ? stop() : start()));
+            reduceMotion.addEventListener('change', start);
 
-            // 矢印ボタンのクリックイベントを追加
-            const prevBtn = document.querySelector('.prev-arrow');
-            const nextBtn = document.querySelector('.next-arrow');
-
-            if (prevBtn && nextBtn) {
-                prevBtn.addEventListener('click', () => {
-                    prevSlide();
-                    resetSlideShow();
-                });
-
-                nextBtn.addEventListener('click', () => {
-                    nextSlide();
-                    resetSlideShow();
-                });
-            }
-    
-            // スライドショー開始
-            startSlideShow();
-        });
+            start();
+        })();
     </script>
 </body>
 </html>
