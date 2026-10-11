@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>利用規約 | 漢字クロス</title>
+    <style>
+        :root {
+            --bg-color: #f5f9fc;
+            --text-color: #172033;
+            --sub-text-color: #667085;
+            --primary-color: #2563eb;
+            --primary-light: #e8f1ff;
+            --border-color: #e2e8f0;
+            --white: #ffffff;
+            --max-width: 1100px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Hiragino Kaku Gothic ProN", "Hiragino Sans", Arial, sans-serif; color: var(--text-color); background: var(--bg-color); line-height: 1.8; }
+        a { color: inherit; text-decoration: none; }
+        .container { width: min(90%, var(--max-width)); margin: 0 auto; }
+
+        header { position: fixed; top: 0; left: 0; width: 100%; z-index: 100; padding: 14px 0; }
+        .header-inner {
+            width: min(92%, var(--max-width)); min-height: 64px; margin: 0 auto; padding: 8px 10px 8px 22px;
+            display: flex; align-items: center; justify-content: space-between;
+            background: rgba(255, 255, 255, 0.88); border: 1px solid rgba(226, 232, 240, 0.9);
+            border-radius: 999px; box-shadow: 0 12px 35px rgba(15, 23, 42, 0.07);
+            backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+        }
+        .logo { font-size: 17px; font-weight: 800; letter-spacing: 0.02em; }
+        .logo span { color: var(--primary-color); }
+        nav { display: flex; align-items: center; gap: 6px; }
+        nav a { padding: 9px 17px; border-radius: 999px; color: #475467; font-size: 13px; font-weight: 700; transition: 0.2s ease; }
+        nav a:hover { color: var(--text-color); background: var(--primary-light); }
+
+        main { padding-top: 130px; }
+        .hero { padding: 30px 0 20px; }
+        .hero-label { display: inline-block; margin-bottom: 20px; padding: 7px 14px; border-radius: 100px; background: var(--primary-light); color: var(--primary-color); font-size: 12px; font-weight: 700; letter-spacing: 0.08em; }
+        .hero h1 { max-width: 850px; font-size: clamp(36px, 6vw, 64px); line-height: 1.2; letter-spacing: -0.04em; font-weight: 800; }
+        .hero h1 span { color: var(--primary-color); }
+        .hero-description { max-width: 650px; margin-top: 24px; color: var(--sub-text-color); font-size: 15px; line-height: 1.9; }
+
+        .policy-section { padding: 20px 0 80px; }
+        .policy-card-list { display: grid; gap: 24px; }
+        .content-card { padding: 40px; background: var(--white); border: 1px solid var(--border-color); border-radius: 28px; box-shadow: 0 15px 45px rgba(15, 23, 42, 0.04); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .content-card:hover { transform: translateY(-2px); box-shadow: 0 18px 45px rgba(15, 23, 42, 0.07); }
+        .content-card h2 { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; font-size: 20px; letter-spacing: -0.02em; color: var(--text-color); }
+        .badge-num { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: var(--primary-light); color: var(--primary-color); font-size: 13px; font-weight: 800; flex-shrink: 0; }
+        .content-card p { margin-bottom: 16px; color: #475467; font-size: 15px; line-height: 1.8; }
+        .content-card p:last-child { margin-bottom: 0; }
+        .content-card a.inline-link { color: var(--primary-color); text-decoration: underline; text-underline-offset: 3px; font-weight: 600; }
+
+        .policy-list { margin: 12px 0 0 20px; padding-left: 10px; color: #475467; font-size: 15px; }
+        .policy-list li { margin-bottom: 8px; }
+
+        table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+        th, td { border: 1px solid var(--border-color); padding: 12px; font-size: 14px; text-align: left; color: #475467; }
+        th { background: #f8fafc; font-weight: 700; color: var(--text-color); }
+
+        .contact-card { display: flex; align-items: center; justify-content: space-between; gap: 30px; padding: 35px 40px; background: var(--white); border: 1px solid var(--border-color); border-radius: 25px; box-shadow: 0 15px 45px rgba(15, 23, 42, 0.04); }
+        .contact-text h3 { margin-bottom: 6px; font-size: 18px; }
+        .contact-text p { margin: 0; color: var(--sub-text-color); font-size: 14px; }
+        .contact-button { display: inline-flex; align-items: center; gap: 10px; flex-shrink: 0; padding: 14px 24px; border-radius: 100px; background: var(--primary-color); color: var(--white); font-size: 13px; font-weight: 700; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .contact-button:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(37, 99, 235, 0.25); }
+
+        .update-info { display: flex; align-items: center; justify-content: space-between; padding: 24px 30px; background: #edf3f8; border-radius: 18px; font-size: 14px; color: var(--sub-text-color); }
+        .update-info strong { color: var(--text-color); }
+
+        footer { padding: 40px 0; background: #0b1120; color: #94a3b8; }
+        .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+        .copyright { font-size: 12px; }
+        .footer-links a { font-size: 12px; margin-left: 16px; transition: 0.2s; }
+        .footer-links a:hover { color: var(--white); }
+
+        @media (max-width: 768px) {
+            header { top: 12px; }
+            .header-inner { min-height: 58px; padding-left: 18px; }
+            .logo { font-size: 15px; }
+            main { padding-top: 100px; }
+            .hero { padding: 40px 0 30px; }
+            .content-card { padding: 30px 20px; border-radius: 22px; }
+            .contact-card { flex-direction: column; align-items: flex-start; padding: 30px 20px; }
+            .contact-button { width: 100%; justify-content: center; }
+            .update-info { flex-direction: column; align-items: flex-start; gap: 6px; padding: 20px; }
+            .footer-inner { flex-direction: column; align-items: flex-start; }
+            .footer-links { margin-top: 12px; }
+            .footer-links a { margin-left: 0; margin-right: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-inner">
+            <a href="../index.html" class="logo">
+                YUKUN'S <span>Collect</span>
+            </a>
+            <nav>
+                <a href="details.html">詳細・スクリーンショット</a>
+                <a href="support.html">サポート</a>
+                <a href="privacy.html">プライバシー</a>
+                <a href="terms.html">利用規約</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <span class="hero-label">LEGAL & PRIVACY</span>
+                <h1>利用<span>規約</span></h1>
+                <p class="hero-description">
+                    本利用規約（以下「本規約」）は、個人開発者（以下「開発者」）が提供するiOSアプリ「漢字クロス」（以下「本アプリ」）の利用条件を定めるものです。本アプリをダウンロード・利用することで、利用者は本規約に同意したものとみなされます。
+                </p>
+            </div>
+        </section>
+
+        <section class="policy-section">
+            <div class="container policy-card-list">
+                <div class="content-card">
+                    <h2><span class="badge-num">1</span>サービス内容</h2>
+                    <p>本アプリは、中央の□に漢字を1文字入れて上下左右の4つの二字熟語を完成させる、日本語向けの漢字パズルアプリです。毎日の問題、無限モード、ヒント、熟語の読みと辞書などの全機能を無料で利用できます。無料版では広告が表示され、App内課金により広告を非表示にできます。</p>
+                </div>
+
+                <div class="content-card">
+                    <h2><span class="badge-num">2</span>利用資格</h2>
+                    <p>本アプリはiOS 18以降を搭載したiPhoneおよびiPadでご利用いただけます。</p>
+                </div>
+
+                <div class="content-card">
+                    <h2><span class="badge-num">3</span>App内課金（買い切り）</h2>
+                    <p>本アプリでは以下の有料アイテムを提供しています。自動更新のサブスクリプションはありません。</p>
+                    <table>
+                        <tr><th>アイテム</th><th>種類</th><th>価格（税込）</th><th>内容</th></tr>
+                        <tr><td>広告を消す</td><td>非消耗型App内課金（1回払い）</td><td>¥600</td><td>バナー広告と全画面広告を非表示にし、ヒントや過去の問題も動画広告なしで利用できる</td></tr>
+                    </table>
+                    <p>料金は購入時にご利用のApple IDのアカウントに請求されます。一度のお支払いで無期限に有効であり、返金・キャンセルはApple社の返金ポリシーに従います。機種変更や再インストールの際は、アプリ内の「購入を復元」から購入済みの状態を復元できます。</p>
+                </div>
+
+                <div class="content-card">
+                    <h2><span class="badge-num">4</span>広告の表示</h2>
+                    <p>無料版では、Google AdMob による広告が表示されます。広告は問題画面の下部と、無限モードで一定回数ごとにのみ表示され、毎日の問題や過去の問題で全画面広告が表示されることはありません。ヒントや過去の問題の解放では、任意で動画広告を視聴する方法を選べます。広告の取り扱いについては<a href="./privacy.html" class="inline-link">プライバシーポリシー</a>をご参照ください。</p>
+                </div>
+
+                <div class="content-card">
+                    <h2><span class="badge-num">5</span>禁止事項</h2>
+                    <ul class="policy-list">
+                        <li>本アプリのリバースエンジニアリング、逆コンパイル、逆アセンブル</li>
+                        <li>本アプリを利用した法令または公序良俗に反する行為</li>
+                        <li>本アプリの不正な改変、複製、再配布</li>
+                        <li>広告の不正なクリック・表示を促す、または自動化ツール等で行う行為</li>
+                    </ul>
+                </div>
+
+                <div class="content-card">
+                    <h2><span class="badge-num">6</span>免責事項</h2>
+                    <p>本アプリは娯楽・学習を目的としたパズルゲームであり、認知機能の維持・改善などの医療的効果を保証するものではありません。問題や熟語の読み・意味には細心の注意を払っていますが、その正確性・完全性を保証するものではありません。開発者は、本アプリの利用により生じたいかなる損害についても、法令で許容される範囲で責任を負わないものとします。</p>
+                </div>
+
+                <div class="content-card">
+                    <h2><span class="badge-num">7</span>データの取り扱い</h2>
+                    <p>本アプリが取り扱う情報については、別途定める<a href="./privacy.html" class="inline-link">プライバシーポリシー</a>をご参照ください。</p>
+                </div>
+
+                <div class="content-card">
+                    <h2><span class="badge-num">8</span>本規約の変更</h2>
+                    <p>開発者は、必要に応じて本規約を変更することがあります。重要な変更を行う場合は、本ページの更新日を改定し、アプリ内でお知らせします。変更後に本アプリを継続してご利用いただいた場合、変更後の規約に同意したものとみなします。</p>
+                </div>
+
+                <div class="content-card">
+                    <h2><span class="badge-num">9</span>準拠法・管轄</h2>
+                    <p>本規約の解釈にあたっては日本法を準拠法とします。本アプリに関して紛争が生じた場合には、開発者の所在地を管轄する裁判所を第一審の専属的合意管轄裁判所とします。</p>
+                </div>
+
+                <div class="contact-card">
+                    <div class="contact-text">
+                        <h3>お問い合わせ・ご連絡先</h3>
+                        <p>本規約に関するお問い合わせはこちらまでお願いいたします。</p>
+                    </div>
+                    <a href="mailto:iosyk520@gmail.com" class="contact-button">
+                        iosyk520@gmail.com
+                    </a>
+                </div>
+
+                <div class="update-info">
+                    <span>最終更新日</span>
+                    <strong>2026年10月11日</strong>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container footer-inner">
+            <p class="copyright">© 2026 YUKUN'S Collect. All Rights Reserved.</p>
+            <div class="footer-links">
+                <a href="./privacy.html">プライバシー</a>
+                <a href="./support.html">サポート</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

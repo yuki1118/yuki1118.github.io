@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>漢字クロス - アプリ詳細</title>
+<style>
+    :root {
+        --bg-color: #f5f9fc;
+        --text-color: #172033;
+        --sub-text-color: #667085;
+        --primary-color: #2563eb;
+        --primary-light: #e8f1ff;
+        --primary-soft: #f0f5ff;
+        --border-color: #e2e8f0;
+        --white: #ffffff;
+        --max-width: 1100px;
+    }
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        font-family:
+            -apple-system,
+            BlinkMacSystemFont,
+            "Helvetica Neue",
+            "Hiragino Kaku Gothic ProN",
+            "Hiragino Sans",
+            Arial,
+            sans-serif;
+        color: var(--text-color);
+        background: var(--bg-color);
+        line-height: 1.8;
+    }
+
+    a {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .container {
+        width: min(90%, var(--max-width));
+        margin: 0 auto;
+    }
+
+    /* ========================================
+       ヘッダー
+    ======================================== */
+    header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 100;
+        padding: 14px 0;
+    }
+
+    .header-inner {
+        width: min(92%, var(--max-width));
+        min-height: 64px;
+        margin: 0 auto;
+        padding: 8px 10px 8px 22px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: rgba(255, 255, 255, 0.88);
+        border: 1px solid rgba(226, 232, 240, 0.9);
+        border-radius: 999px;
+        box-shadow: 0 12px 35px rgba(15, 23, 42, 0.07);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+    }
+
+    .logo {
+        font-size: 17px;
+        font-weight: 800;
+        letter-spacing: 0.02em;
+    }
+
+    .logo span {
+        color: var(--primary-color);
+    }
+
+    nav {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    nav a {
+        padding: 9px 17px;
+        border-radius: 999px;
+        color: #475467;
+        font-size: 13px;
+        font-weight: 700;
+        transition: 0.2s ease;
+    }
+
+    nav a:hover {
+        color: var(--text-color);
+        background: var(--primary-soft);
+    }
+
+    /* ========================================
+       コンテンツ
+    ======================================== */
+    /* ヒーローセクション */
+    .hero {
+        padding: 150px 0 60px;
+        text-align: center;
+    }
+    .hero h1 {
+        font-size: clamp(32px, 5vw, 48px);
+        font-weight: 800;
+        margin-bottom: 24px;
+        letter-spacing: -0.03em;
+        line-height: 1.25;
+    }
+    .hero p {
+        font-size: 16px;
+        color: var(--sub-text-color);
+        margin-bottom: 0;
+    }
+
+    /* 機能説明セクション */
+    .features {
+        background-color: var(--white);
+        padding: 80px 0;
+        border-radius: 40px 40px 0 0;
+        box-shadow: 0 -10px 30px rgba(15, 23, 42, 0.02);
+    }
+
+    .feature-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 64px;
+    }
+
+    .feature-item {
+        display: flex;
+        align-items: center;
+        gap: 40px;
+    }
+
+    .feature-item:nth-child(even) {
+        flex-direction: row-reverse;
+    }
+
+    .feature-text {
+        flex: 1;
+    }
+
+    .feature-text h2 {
+        font-size: 28px;
+        margin-bottom: 16px;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+    }
+
+    .feature-text p {
+        font-size: 15px;
+        color: var(--sub-text-color);
+    }
+
+    /* 画面イメージのモックアップ */
+    .mockup {
+        width: 260px;
+        height: 520px;
+        border-radius: 32px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        flex-shrink: 0;
+    }
+
+    .mockup.light {
+        background-color: #f4f5f7;
+        color: #111;
+        border: 8px solid #ddd;
+        box-sizing: border-box;
+    }
+
+    .mockup img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    /* =========================
+       フッター
+    ========================= */
+    footer {
+        padding: 40px 0;
+        background: #0b1120;
+        color: #94a3b8;
+    }
+
+    .footer-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+    }
+
+    .copyright {
+        font-size: 12px;
+    }
+
+    /* レスポンシブ */
+    @media (max-width: 768px) {
+        header {
+            top: 12px;
+        }
+
+        .header-inner {
+            height: 58px;
+            padding-left: 18px;
+        }
+
+        .logo {
+            font-size: 15px;
+        }
+
+        .hero {
+            padding: 120px 0 50px;
+        }
+
+        .footer-inner {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .feature-item, .feature-item:nth-child(even) {
+            flex-direction: column;
+            text-align: center;
+        }
+    }
+</style>
+</head>
+<body>
+
+    <!-- ヘッダー -->
+    <header>
+        <div class="header-inner">
+            <a href="../index.html" class="logo">
+                YUKUN'S <span>Collect</span>
+            </a>
+
+            <nav>
+                <a href="details.html">詳細・スクリーンショット</a>
+                <a href="support.html">サポート</a>
+                <a href="privacy.html">プライバシー</a>
+                <a href="terms.html">利用規約</a>
+            </nav>
+        </div>
+    </header>
+
+  <main>
+      <section class="hero container">
+        <h1>毎朝9問、新しい漢字パズルが届く。</h1>
+        <p>□に1字入れて、4つの熟語を完成。朝の脳トレにぴったりの「和同開珎」パズルです。</p>
+      </section>
+
+      <section class="features">
+        <div class="container feature-grid">
+
+          <!-- 毎日9問 -->
+          <div class="feature-item">
+            <div class="feature-text">
+              <h2>毎日9問、全員共通の問題</h2>
+              <p>初級・中級・上級を各3問、日付ごとに新しい問題が届きます。連続日数も記録されるので、毎朝の習慣づくりに最適です。カレンダーから昨日までの毎日問題をさかのぼって遊ぶこともできます。</p>
+            </div>
+          </div>
+
+          <!-- 問題画面 -->
+          <div class="feature-item">
+            <div class="feature-text">
+              <h2>自分で入力して解く手ごたえ</h2>
+              <p>中央の□に漢字を1文字入れて、上下左右の4つの二字熟語を完成させます。選択式ではなく、キーボードで入力するスタイル。外れても入力した字は盤面に残るので、何度でも打ち直せます。</p>
+            </div>
+          </div>
+
+          <!-- ヒント -->
+          <div class="feature-item">
+            <div class="feature-text">
+              <h2>詰まっても大丈夫な3段階ヒント</h2>
+              <p>①8択 ②4択 ③熟語の読み、と段階的にヒントを出せます。どうしても分からないときは「あきらめる」で答えを確認できます。ヒント②③は、任意で動画広告を見て使うこともできます。</p>
+            </div>
+          </div>
+
+          <!-- 無限モード -->
+          <div class="feature-item">
+            <div class="feature-text">
+              <h2>何問でも遊べる無限モード</h2>
+              <p>毎日9問では足りない方は、難易度を選んで何問でも続けて遊べます。問題が尽きる心配はありません。</p>
+            </div>
+          </div>
+
+          <!-- 読み・辞書 -->
+          <div class="feature-item">
+            <div class="feature-text">
+              <h2>読みと意味が身につく</h2>
+              <p>解いたあとに4つの熟語の読みを表示し、タップすると iOS の辞書で意味を確認できます。解いた熟語は「覚えた熟語」に貯まり、漢字や読みで検索もできます。</p>
+            </div>
+          </div>
+
+          <!-- 広告 -->
+          <div class="feature-item">
+            <div class="feature-text">
+              <h2>広告を消す（買い切り ¥600）</h2>
+              <p>本アプリは無料で全機能を遊べます（広告表示あり）。広告は問題画面の下部（盤面や入力欄に重ならない位置）と、無限モードで一定回数ごとにだけ表示されます。アプリ内課金「広告を消す」で、バナーと全画面広告を非表示にでき、ヒントや過去の問題も動画広告なしで使えます。月額ではなく、一度の購入でずっと有効です。</p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+  </main>
+
+<footer>
+    <div class="container footer-inner">
+        <p class="copyright">
+            © 2026 YUKUN'S Collect. All Rights Reserved.
+        </p>
+    </div>
+</footer>
+
+</body>
+</html>
