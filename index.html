@@ -7,38 +7,41 @@
 
     <title>YUKUN'S Collect | iOSアプリ開発</title>
     <meta name="description" content="YUKUN'S Collectでは、iOSアプリを中心に、日常で繰り返し使いたくなるシンプルなアプリを開発しています。">
-    <meta name="theme-color" content="#f5f9fc">
+    <meta name="theme-color" content="#08080a">
     <meta name="format-detection" content="telephone=no">
-    <link rel="canonical" href="https://yuki1118.github.io/">
     <link rel="apple-touch-icon" href="img/yamekatsu/icon-256.jpg">
 
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="YUKUN'S Collect">
     <meta property="og:title" content="YUKUN'S Collect | iOSアプリ開発">
     <meta property="og:description" content="日常で繰り返し使いたくなる、シンプルなiOSアプリを開発しています。">
-    <meta property="og:url" content="https://yuki1118.github.io/">
     <meta property="og:image" content="https://yuki1118.github.io/img/yamekatsu/icon-256.jpg">
     <meta name="twitter:card" content="summary">
 
-    <!-- ヒーロー1枚目の画像を先読み -->
-    <link rel="preload" as="image" href="img/flashMorse/home-600.jpg" fetchpriority="high">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --bg-color: #f5f9fc;
-            --surface-color: #ffffff;
-            --text-color: #172033;
-            --sub-text-color: #667085;
-            --muted-text-color: #475467;
-            --primary-color: #2563eb;
-            --primary-soft: #eaf2ff;
-            --border-color: #e2e8f0;
-            --dark-color: #111827;
-            --max-width: 1160px;
-            --gutter: max(20px, 5vw);
-            --safe-left: env(safe-area-inset-left, 0px);
-            --safe-right: env(safe-area-inset-right, 0px);
-            color-scheme: light;
+            --bg: #08080a;
+            --surface: #111114;
+            --surface-2: #17171b;
+            --line: rgba(255, 255, 255, 0.09);
+            --line-strong: rgba(255, 255, 255, 0.18);
+            --text: #f4f4f5;
+            --sub: #a1a1aa;
+            --dim: #63636e;
+            --accent: #e4ff3c;
+            --accent-ink: #0b0b0d;
+            --max: 1240px;
+            --gutter: max(20px, 4.5vw);
+            --safe-l: env(safe-area-inset-left, 0px);
+            --safe-r: env(safe-area-inset-right, 0px);
+            --font-display: "Space Grotesk", -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", sans-serif;
+            --font-body: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Hiragino Sans", "Hiragino Kaku Gothic ProN", sans-serif;
+            --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+            color-scheme: dark;
         }
 
         *,
@@ -52,6 +55,7 @@
         html {
             -webkit-text-size-adjust: 100%;
             text-size-adjust: 100%;
+            background: var(--bg);
         }
 
         @media (prefers-reduced-motion: no-preference) {
@@ -61,20 +65,29 @@
         }
 
         body {
-            font-family:
-                -apple-system,
-                BlinkMacSystemFont,
-                "Helvetica Neue",
-                "Hiragino Kaku Gothic ProN",
-                "Hiragino Sans",
-                Arial,
-                sans-serif;
-            color: var(--text-color);
-            background: var(--bg-color);
+            font-family: var(--font-body);
+            color: var(--text);
+            background: var(--bg);
             line-height: 1.7;
             -webkit-font-smoothing: antialiased;
             -webkit-tap-highlight-color: transparent;
             overflow-x: clip;
+        }
+
+        /* 画面全体にうっすら粒子ノイズ */
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: 999;
+            pointer-events: none;
+            opacity: 0.06;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        }
+
+        ::selection {
+            background: var(--accent);
+            color: var(--accent-ink);
         }
 
         a {
@@ -88,29 +101,11 @@
             display: block;
         }
 
-        button {
-            font: inherit;
-            color: inherit;
-            background: none;
-            border: 0;
-            cursor: pointer;
-        }
-
         :focus-visible {
-            outline: 3px solid var(--primary-color);
-            outline-offset: 3px;
+            outline: 2px solid var(--accent);
+            outline-offset: 4px;
         }
 
-        .container {
-            width: min(100% - var(--gutter) * 2 - var(--safe-left) - var(--safe-right), var(--max-width));
-            margin-inline: auto;
-        }
-
-        .section {
-            padding-block: 120px;
-        }
-
-        /* 日本語の改行位置を文節単位に（対応ブラウザのみ） */
         h1,
         h2,
         h3,
@@ -120,6 +115,31 @@
             text-wrap: pretty;
         }
 
+        .container {
+            width: min(100% - var(--gutter) * 2 - var(--safe-l) - var(--safe-r), var(--max));
+            margin-inline: auto;
+        }
+
+        .mono {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        /* スクロールで下からふわっと出す（JSが無効なら最初から表示） */
+        .js .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.9s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+            transition-delay: var(--delay, 0s);
+        }
+
+        .js .reveal.is-in {
+            opacity: 1;
+            transform: none;
+        }
+
         /* ========================================
            ヘッダー
         ======================================== */
@@ -127,730 +147,954 @@
             position: fixed;
             inset: 0 0 auto;
             z-index: 100;
-            padding: max(14px, env(safe-area-inset-top, 0px)) 0 14px;
+            padding-top: env(safe-area-inset-top, 0px);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+            border-bottom: 1px solid transparent;
+        }
+
+        .site-header.is-scrolled {
+            background: rgba(8, 8, 10, 0.72);
+            border-color: var(--line);
+            backdrop-filter: blur(16px) saturate(140%);
+            -webkit-backdrop-filter: blur(16px) saturate(140%);
         }
 
         .header-inner {
-            width: min(100% - 32px - var(--safe-left) - var(--safe-right), var(--max-width));
-            min-height: 64px;
-            margin-inline: auto;
-            padding: 8px 10px 8px 22px;
+            height: 68px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: rgba(255, 255, 255, 0.88);
-            border: 1px solid rgba(226, 232, 240, 0.9);
-            border-radius: 999px;
-            box-shadow: 0 12px 35px rgba(15, 23, 42, 0.07);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
+            gap: 16px;
         }
 
         .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-display);
+            font-weight: 700;
             font-size: 17px;
-            font-weight: 800;
-            letter-spacing: 0.02em;
+            letter-spacing: -0.01em;
             white-space: nowrap;
         }
 
+        .logo-mark {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 18px var(--accent);
+        }
+
         .logo span {
-            color: var(--primary-color);
+            color: var(--sub);
+            font-weight: 500;
         }
 
         .site-nav {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
         }
 
         .site-nav a {
-            padding: 9px 17px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            min-height: 40px;
+            padding: 0 14px;
             border-radius: 999px;
-            color: var(--muted-text-color);
-            font-size: 13px;
-            font-weight: 700;
+            color: var(--sub);
             transition: color 0.2s ease, background-color 0.2s ease;
         }
 
+        .site-nav a.is-pill {
+            color: var(--text);
+            border: 1px solid var(--line-strong);
+        }
+
         /* ========================================
-           ヒーロー（スライドショー）
+           ヒーロー
         ======================================== */
         .hero {
             position: relative;
-            min-height: 860px;
-            padding: 120px 0 80px; /* 固定ヘッダーの下から始める */
+            min-height: 100svh;
+            padding: 140px 0 56px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-end;
             overflow: hidden;
-            background:
-                radial-gradient(circle at 82% 28%, rgba(37, 99, 235, 0.13), transparent 29%),
-                radial-gradient(circle at 15% 75%, rgba(6, 182, 212, 0.08), transparent 25%),
-                var(--bg-color);
+            isolation: isolate;
         }
 
-        .hero::before,
+        /* 方眼と光のにじみ */
+        .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: -2;
+            background-image:
+                linear-gradient(var(--line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--line) 1px, transparent 1px);
+            background-size: 72px 72px;
+            mask-image: radial-gradient(ellipse 80% 70% at 70% 30%, #000 20%, transparent 75%);
+            -webkit-mask-image: radial-gradient(ellipse 80% 70% at 70% 30%, #000 20%, transparent 75%);
+        }
+
         .hero::after {
             content: "";
             position: absolute;
+            width: min(70vw, 820px);
+            aspect-ratio: 1;
+            top: -18%;
+            right: -12%;
+            z-index: -1;
             border-radius: 50%;
-            pointer-events: none;
+            background: radial-gradient(circle, rgba(228, 255, 60, 0.16), rgba(228, 255, 60, 0.04) 40%, transparent 68%);
+            filter: blur(10px);
         }
 
-        .hero::before {
-            width: 520px;
-            height: 520px;
-            top: -300px;
-            right: -100px;
-            border: 1px solid rgba(37, 99, 235, 0.08);
+        .hero-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 24px;
+            margin-bottom: clamp(32px, 6vh, 64px);
+            color: var(--sub);
         }
 
-        .hero::after {
-            width: 320px;
-            height: 320px;
-            bottom: -210px;
-            left: -100px;
-            border: 1px solid rgba(6, 182, 212, 0.08);
-        }
-
-        /* 全スライドを同じセルに重ねる（高さは一番高いスライドに揃い、切り替えでガタつかない） */
-        .hero-slider {
-            display: grid;
-            width: 100%;
-            touch-action: pan-y;
-        }
-
-        .hero-slide {
-            grid-area: 1 / 1;
+        /* モールス信号のように点滅するライン */
+        .signal {
             display: flex;
             align-items: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.6s ease-in-out, visibility 0.6s ease-in-out;
-        }
-
-        .hero-slide.is-active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .hero-inner {
-            position: relative;
-            z-index: 1;
-            display: grid;
-            grid-template-columns: 1.05fr 0.95fr;
-            align-items: center;
-            gap: 50px;
-        }
-
-        .hero-content {
-            max-width: 620px;
-        }
-
-        .app-logo {
-            width: 82px;
-            height: 82px;
-            margin-bottom: 28px;
-            border-radius: 22px;
-            object-fit: cover;
-            box-shadow: 0 18px 45px rgba(15, 23, 42, 0.14);
-        }
-
-        .label-pill {
-            display: inline-flex;
-            align-items: center;
-            min-height: 30px;
-            margin-bottom: 18px;
-            padding: 5px 13px;
-            border-radius: 999px;
-            background: var(--primary-soft);
-            color: var(--primary-color);
-            font-size: 11px;
-            font-weight: 800;
-            letter-spacing: 0.14em;
-        }
-
-        .hero h1 {
-            font-size: clamp(42px, 7vw, 82px);
-            line-height: 1.04;
-            letter-spacing: -0.055em;
-            font-weight: 800;
-            color: var(--primary-color);
-        }
-
-        .hero-description {
-            max-width: 570px;
-            margin-top: 30px;
-            color: var(--sub-text-color);
-            font-size: 16px;
-            line-height: 2;
-        }
-
-        .hero-description + .hero-description {
-            margin-top: 1em;
-        }
-
-        .hero-action-group {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin-top: 38px;
-            flex-wrap: wrap;
-        }
-
-        .app-store-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            padding: 14px 23px;
-            color: #ffffff;
-            background: var(--dark-color);
-            border-radius: 999px;
-            box-shadow: 0 12px 25px rgba(15, 23, 42, 0.13);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .app-store-button svg {
-            width: 20px;
-            height: 20px;
-            flex-shrink: 0;
-            fill: currentColor;
-        }
-
-        .app-store-text small {
-            display: block;
-            font-size: 9px;
-            line-height: 1;
-            opacity: 0.8;
-        }
-
-        .app-store-text strong {
-            display: block;
-            margin-top: 4px;
-            font-size: 16px;
-            line-height: 1;
-        }
-
-        /* カード内の小さい App Store ボタン */
-        .app-store-button.is-small {
-            position: relative;
-            z-index: 2; /* カード全体のリンクより前面に置き、個別にタップできるようにする */
-            flex-shrink: 0;
             gap: 7px;
-            padding: 7px 13px;
+            flex-wrap: wrap;
+            max-width: 420px;
         }
 
-        .app-store-button.is-small svg {
-            width: 15px;
-            height: 15px;
+        .signal i {
+            display: block;
+            height: 8px;
+            width: 8px;
+            border-radius: 99px;
+            background: var(--dim);
+            opacity: 0.45;
+            transition: background-color 0.12s linear, opacity 0.12s linear, box-shadow 0.12s linear;
         }
 
-        .app-store-button.is-small .app-store-text strong {
-            margin-top: 2px;
-            font-size: 11px;
+        .signal i.dash {
+            width: 26px;
         }
 
-        .detail-button {
+        .signal i.gap {
+            width: 10px;
+            background: transparent;
+        }
+
+        .signal i.is-on {
+            background: var(--accent);
+            opacity: 1;
+            box-shadow: 0 0 14px var(--accent), 0 0 32px rgba(228, 255, 60, 0.5);
+        }
+
+        .hero-title {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: clamp(64px, 15.5vw, 236px);
+            line-height: 0.86;
+            letter-spacing: -0.065em;
+            text-transform: uppercase;
+        }
+
+        .hero-title .line {
+            display: block;
+        }
+
+        .hero-title .outline {
+            color: transparent;
+            -webkit-text-stroke: 1.5px var(--text);
+        }
+
+        .hero-title .dot {
+            color: var(--accent);
+        }
+
+        .hero-bottom {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: end;
+            gap: 32px;
+            margin-top: clamp(32px, 5vh, 56px);
+            padding-top: 28px;
+            border-top: 1px solid var(--line);
+        }
+
+        .hero-lead {
+            max-width: 520px;
+            color: var(--sub);
+            font-size: 16px;
+            line-height: 1.95;
+        }
+
+        .hero-lead strong {
+            color: var(--text);
+            font-weight: 700;
+        }
+
+        .hero-apps {
+            display: flex;
+            gap: 10px;
+        }
+
+        .hero-app-chip {
             display: inline-flex;
             align-items: center;
-            justify-content: center;
-            padding: 14px 28px;
-            color: var(--text-color);
-            background: rgba(255, 255, 255, 0.9);
-            border: 1px solid var(--border-color);
+            gap: 10px;
+            min-height: 52px;
+            padding: 6px 18px 6px 6px;
+            border: 1px solid var(--line-strong);
             border-radius: 999px;
+            background: rgba(255, 255, 255, 0.03);
             font-weight: 700;
-            font-size: 15px;
-            box-shadow: 0 4px 15px rgba(15, 23, 42, 0.05);
-            transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .hero-image {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .phone {
-            width: 275px;
-            padding: 10px;
-            border-radius: 42px;
-            background: var(--dark-color);
-            box-shadow: 0 38px 80px rgba(15, 23, 42, 0.22);
-            transform: rotate(2deg);
-        }
-
-        .phone img {
-            width: 100%;
-            border-radius: 34px;
-            aspect-ratio: 9 / 19.5;
-            object-fit: cover;
-            background: #dbeafe;
-        }
-
-        .app-tabs {
-            width: min(100%, 520px);
-            margin-top: 32px;
-            padding: 5px;
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 5px;
-            background: rgba(255, 255, 255, 0.86);
-            border: 1px solid var(--border-color);
-            border-radius: 999px;
-            box-shadow: 0 10px 28px rgba(15, 23, 42, 0.07);
-        }
-
-        .app-tab {
-            min-height: 48px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            border-radius: 999px;
-            color: var(--muted-text-color);
-            font-size: 13px;
-            font-weight: 700;
-            transition: color 0.2s ease, background-color 0.2s ease;
-        }
-
-        .app-tab::after {
-            content: "→";
             font-size: 14px;
-            transition: transform 0.2s ease;
+            transition: border-color 0.25s ease, background-color 0.25s ease, transform 0.25s ease;
+        }
+
+        .hero-app-chip img {
+            width: 40px;
+            height: 40px;
+            border-radius: 11px;
+        }
+
+        .hero-app-chip .mono {
+            font-size: 10px;
+            color: var(--dim);
         }
 
         /* ========================================
-           スライダー操作（矢印・ドット）
+           流れるテキスト帯
         ======================================== */
-        .slider-arrow {
-            position: absolute;
-            top: 50%;
-            z-index: 10;
-            width: 48px;
-            height: 48px;
-            display: grid;
-            place-items: center;
-            background: rgba(255, 255, 255, 0.6);
-            border: 1px solid rgba(226, 232, 240, 0.8);
-            border-radius: 50%;
-            color: var(--sub-text-color);
-            translate: 0 -50%;
-            transition: color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+        .marquee {
+            overflow: hidden;
+            border-block: 1px solid var(--line);
+            background: var(--accent);
+            color: var(--accent-ink);
+            transform: rotate(-1.6deg) scale(1.04);
+            margin-block: 24px;
         }
 
-        .slider-arrow svg {
-            width: 18px;
-            height: 18px;
-            fill: none;
-            stroke: currentColor;
-            stroke-width: 2.5;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
-
-        .prev-arrow {
-            left: calc(24px + var(--safe-left));
-        }
-
-        .next-arrow {
-            right: calc(24px + var(--safe-right));
-        }
-
-        .slider-nav {
-            position: absolute;
-            bottom: 40px;
-            left: 50%;
-            z-index: 10;
+        .marquee-track {
             display: flex;
-            translate: -50% 0;
+            width: max-content;
+            animation: marquee 32s linear infinite;
         }
 
-        /* 見た目は10pxの点、タップ領域は30px確保 */
-        .slider-dot {
-            width: 30px;
-            height: 30px;
-            display: grid;
-            place-items: center;
+        .marquee-group {
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
         }
 
-        .slider-dot::before {
-            content: "";
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: rgba(37, 99, 235, 0.2);
-            transition: background-color 0.3s ease, transform 0.3s ease;
+        .marquee-group span {
+            padding: 16px 28px;
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: clamp(20px, 3vw, 34px);
+            letter-spacing: -0.03em;
+            text-transform: uppercase;
+            white-space: nowrap;
         }
 
-        .slider-dot[aria-current="true"]::before {
-            background: var(--primary-color);
-            transform: scale(1.3);
+        .marquee-group span.morse {
+            font-family: var(--font-mono);
+            font-weight: 600;
+            font-size: clamp(16px, 2.2vw, 24px);
+            letter-spacing: 0.18em;
+            opacity: 0.6;
+        }
+
+        @keyframes marquee {
+            to {
+                transform: translateX(-50%);
+            }
         }
 
         /* ========================================
            セクション見出し
         ======================================== */
-        .section-title {
-            max-width: 720px;
-            margin: 0 auto 65px;
-            text-align: center;
+        .section {
+            padding-block: clamp(96px, 14vw, 180px);
         }
 
-        .section-title .label {
+        .section-head {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: end;
+            gap: 24px;
+            margin-bottom: clamp(48px, 7vw, 88px);
+        }
+
+        .section-head .mono {
             display: block;
-            margin-bottom: 12px;
-            color: var(--primary-color);
-            font-size: 11px;
-            font-weight: 800;
-            letter-spacing: 0.16em;
+            margin-bottom: 18px;
+            color: var(--accent);
+        }
+
+        .section-head h2 {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: clamp(44px, 8vw, 112px);
+            line-height: 0.92;
+            letter-spacing: -0.055em;
             text-transform: uppercase;
         }
 
-        .section-title h2 {
-            font-size: clamp(34px, 5vw, 52px);
-            line-height: 1.12;
-            font-weight: 800;
-            letter-spacing: -0.045em;
-        }
-
-        .section-title p {
-            margin-top: 18px;
-            color: var(--sub-text-color);
-            font-size: 15px;
+        .section-head p {
+            max-width: 320px;
+            color: var(--sub);
+            font-size: 14px;
         }
 
         /* ========================================
-           アプリ一覧
+           アプリ紹介（大きなカード）
         ======================================== */
-        .app-grid {
+        .showcase {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+            gap: clamp(20px, 3vw, 32px);
+        }
+
+        .app-panel {
+            --mx: 70%;
+            --my: 30%;
+            position: relative;
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            align-items: center;
+            gap: 40px;
+            min-height: 640px;
+            padding: clamp(28px, 5vw, 72px);
+            border: 1px solid var(--line);
+            border-radius: 36px;
+            background:
+                radial-gradient(600px circle at var(--mx) var(--my), color-mix(in srgb, var(--app) 14%, transparent), transparent 60%),
+                var(--surface);
+            overflow: hidden;
+            isolation: isolate;
+        }
+
+        .app-panel::before {
+            content: attr(data-index);
+            position: absolute;
+            right: -0.06em;
+            bottom: -0.22em;
+            z-index: -1;
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: clamp(220px, 34vw, 480px);
+            line-height: 1;
+            letter-spacing: -0.08em;
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.07);
+            pointer-events: none;
+        }
+
+        .app-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 28px;
+        }
+
+        .app-meta span {
+            padding: 6px 12px;
+            border: 1px solid var(--line-strong);
+            border-radius: 999px;
+            color: var(--sub);
+            font-size: 11px;
+        }
+
+        .app-meta span.is-live {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--app);
+            border-color: color-mix(in srgb, var(--app) 45%, transparent);
+        }
+
+        .app-meta span.is-live::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+            box-shadow: 0 0 10px currentColor;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            50% {
+                opacity: 0.35;
+            }
+        }
+
+        .app-heading {
+            display: flex;
+            align-items: center;
             gap: 20px;
         }
 
-        .app-card {
-            position: relative; /* カード全体リンク（疑似要素）の基準 */
-            min-height: 212px;
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            background: rgba(255, 255, 255, 0.92);
-            border: 1px solid var(--border-color);
-            border-radius: 28px;
-            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.035);
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        .app-heading img {
+            width: 72px;
+            height: 72px;
+            flex-shrink: 0;
+            border-radius: 20px;
+            box-shadow: 0 0 0 1px var(--line-strong), 0 20px 50px rgba(0, 0, 0, 0.5);
         }
 
-        .app-card-header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
+        .app-panel h3 {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: clamp(44px, 6.4vw, 92px);
+            line-height: 0.95;
+            letter-spacing: -0.055em;
         }
 
-        .app-card-info {
-            flex: 1;
-            min-width: 0;
+        .app-tagline {
+            margin-top: 28px;
+            font-size: clamp(20px, 2.2vw, 26px);
+            font-weight: 700;
+            line-height: 1.5;
+            letter-spacing: -0.01em;
+        }
+
+        .app-tagline em {
+            font-style: normal;
+            color: var(--app);
+        }
+
+        .app-desc {
+            max-width: 500px;
+            margin-top: 16px;
+            color: var(--sub);
+            font-size: 15px;
+            line-height: 1.95;
+        }
+
+        .app-actions {
             display: flex;
+            flex-wrap: wrap;
             align-items: center;
-            justify-content: space-between;
+            gap: 12px;
+            margin-top: 36px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             gap: 10px;
+            min-height: 54px;
+            padding: 0 24px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 14px;
+            transition: transform 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
         }
 
-        .app-card .label-pill {
-            min-height: 24px;
-            margin-bottom: 6px;
-            padding: 3px 10px;
-            font-size: 10px;
+        .btn svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+            flex-shrink: 0;
         }
 
-        /* タイトルのリンクをカード全体に広げる */
-        .app-card-main-link::after {
+        .btn-store {
+            background: var(--text);
+            color: var(--accent-ink);
+        }
+
+        .btn-store .small {
+            display: block;
+            font-size: 9px;
+            font-weight: 600;
+            line-height: 1;
+            opacity: 0.7;
+        }
+
+        .btn-store .big {
+            display: block;
+            margin-top: 3px;
+            font-size: 16px;
+            line-height: 1;
+        }
+
+        .btn-ghost {
+            border: 1px solid var(--line-strong);
+            color: var(--text);
+        }
+
+        .btn-ghost::after {
+            content: "→";
+            transition: transform 0.25s ease;
+        }
+
+        .app-links {
+            display: flex;
+            gap: 22px;
+            margin-top: 28px;
+            color: var(--dim);
+        }
+
+        .app-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            min-height: 32px;
+            border-bottom: 1px solid transparent;
+            transition: color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .app-links a::after {
+            content: "↗";
+        }
+
+        /* 端末の画面 */
+        .app-visual {
+            position: relative;
+            display: grid;
+            place-items: center;
+        }
+
+        .app-visual::before {
+            content: "";
+            position: absolute;
+            width: 78%;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            background: radial-gradient(circle, color-mix(in srgb, var(--app) 38%, transparent), transparent 66%);
+            filter: blur(30px);
+            z-index: -1;
+        }
+
+        .device {
+            width: min(290px, 70vw);
+            padding: 9px;
+            border-radius: 46px;
+            background: linear-gradient(145deg, #2a2a30, #0d0d10 60%);
+            box-shadow:
+                0 0 0 1px rgba(255, 255, 255, 0.08),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+                0 50px 100px rgba(0, 0, 0, 0.6);
+            transform: perspective(1200px) rotateY(var(--ry, -12deg)) rotateX(var(--rx, 4deg)) rotateZ(2deg);
+            transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+        }
+
+        .device img {
+            width: 100%;
+            aspect-ratio: 9 / 19.5;
+            object-fit: cover;
+            border-radius: 38px;
+            background: #1c1c20;
+        }
+
+        .app-panel.is-flipped .device {
+            --ry: 12deg;
+            transform: perspective(1200px) rotateY(var(--ry)) rotateX(var(--rx, 4deg)) rotateZ(-2deg);
+        }
+
+        /* ========================================
+           アプリ一覧（行リスト）
+        ======================================== */
+        .index-list {
+            list-style: none;
+            border-top: 1px solid var(--line-strong);
+        }
+
+        .index-row {
+            position: relative;
+            display: grid;
+            grid-template-columns: 64px 56px 1fr auto 48px;
+            align-items: center;
+            gap: 24px;
+            padding: 26px 8px;
+            border-bottom: 1px solid var(--line-strong);
+            overflow: hidden;
+            isolation: isolate;
+        }
+
+        /* ホバーで左から蛍光色が満ちる */
+        .index-row::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            background: var(--accent);
+            transform: scaleY(0);
+            transform-origin: bottom;
+            transition: transform 0.45s cubic-bezier(0.7, 0, 0.2, 1);
+        }
+
+        .index-num {
+            color: var(--dim);
+        }
+
+        .index-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            object-fit: cover;
+            background: var(--surface-2);
+            border: 1px dashed var(--line-strong);
+        }
+
+        img.index-icon {
+            border: 0;
+        }
+
+        .index-name {
+            min-width: 0;
+        }
+
+        .index-name h3 {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: clamp(26px, 3.6vw, 48px);
+            line-height: 1.05;
+            letter-spacing: -0.04em;
+        }
+
+        .index-name p {
+            margin-top: 6px;
+            color: var(--sub);
+            font-size: 13.5px;
+            transition: color 0.3s ease;
+        }
+
+        .index-status {
+            color: var(--accent);
+            white-space: nowrap;
+        }
+
+        .index-status.is-idea {
+            color: var(--dim);
+        }
+
+        .index-arrow {
+            width: 48px;
+            height: 48px;
+            display: grid;
+            place-items: center;
+            border: 1px solid var(--line-strong);
+            border-radius: 50%;
+            font-size: 18px;
+            transition: transform 0.35s ease, border-color 0.3s ease;
+        }
+
+        /* 行全体をリンクにする */
+        .index-link::after {
             content: "";
             position: absolute;
             inset: 0;
             z-index: 1;
-            border-radius: inherit;
         }
 
-        .app-card-icon {
-            width: 64px;
-            height: 64px;
-            flex-shrink: 0;
-            border-radius: 18px;
-            object-fit: cover;
-            background: var(--border-color);
-        }
-
-        .app-card h3 {
-            font-size: 19px;
-            font-weight: 800;
-            line-height: 1.4;
-        }
-
-        .app-status {
-            display: inline-block;
-            margin-top: 4px;
-            color: var(--primary-color);
-            font-size: 10px;
-            font-weight: 800;
-            letter-spacing: 0.08em;
-        }
-
-        .app-card p {
-            margin-top: 30px;
-            color: var(--sub-text-color);
-            font-size: 14px;
-            line-height: 1.9;
+        .index-store {
+            position: relative;
+            z-index: 2;
         }
 
         /* ========================================
            フッター
         ======================================== */
         .site-footer {
-            padding: 50px 0 max(50px, env(safe-area-inset-bottom, 0px));
-            background: #0b1120;
-            color: #94a3b8;
+            padding: clamp(80px, 12vw, 140px) 0 max(36px, env(safe-area-inset-bottom, 0px));
+            border-top: 1px solid var(--line);
+            overflow: hidden;
         }
 
-        .copyright {
-            font-size: 12px;
+        .footer-cta {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .footer-cta p {
+            max-width: 420px;
+            color: var(--sub);
+        }
+
+        .footer-wordmark {
+            margin-top: clamp(48px, 8vw, 96px);
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: clamp(56px, 21vw, 320px);
+            line-height: 0.8;
+            letter-spacing: -0.07em;
+            white-space: nowrap;
+            background: linear-gradient(180deg, #ffffff 10%, rgba(255, 255, 255, 0.04) 95%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            user-select: none;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-top: 40px;
+            color: var(--dim);
         }
 
         /* ========================================
-           ホバー（マウス操作の端末だけ。スマホでホバー状態が残るのを防ぐ）
+           ホバー（マウス操作の端末だけ）
         ======================================== */
         @media (hover: hover) {
             .site-nav a:hover {
-                color: var(--text-color);
-                background: var(--primary-soft);
+                color: var(--text);
+                background: rgba(255, 255, 255, 0.06);
             }
 
-            .app-store-button:hover {
-                transform: translateY(-3px);
-                box-shadow: 0 18px 32px rgba(15, 23, 42, 0.18);
+            .site-nav a.is-pill:hover {
+                background: var(--accent);
+                border-color: var(--accent);
+                color: var(--accent-ink);
             }
 
-            .detail-button:hover {
-                background: var(--surface-color);
-                border-color: var(--primary-color);
-                color: var(--primary-color);
+            .hero-app-chip:hover {
+                border-color: var(--accent);
+                background: rgba(228, 255, 60, 0.06);
                 transform: translateY(-2px);
-                box-shadow: 0 8px 20px rgba(37, 99, 235, 0.1);
             }
 
-            .app-tab:hover {
-                color: var(--primary-color);
-                background: var(--primary-soft);
+            .btn-store:hover {
+                background: var(--app, var(--accent));
+                transform: translateY(-2px);
+                box-shadow: 0 14px 40px color-mix(in srgb, var(--app, var(--accent)) 35%, transparent);
             }
 
-            .app-tab:hover::after {
-                transform: translateX(3px);
+            .btn-ghost:hover {
+                border-color: var(--text);
             }
 
-            .slider-arrow:hover {
-                background: rgba(255, 255, 255, 0.95);
-                color: var(--primary-color);
-                box-shadow: 0 4px 15px rgba(15, 23, 42, 0.08);
+            .btn-ghost:hover::after {
+                transform: translateX(4px);
             }
 
-            .app-card:hover {
-                transform: translateY(-6px);
-                box-shadow: 0 22px 45px rgba(15, 23, 42, 0.09);
+            .app-links a:hover {
+                color: var(--text);
+                border-color: currentColor;
+            }
+
+            .index-row:hover::before {
+                transform: scaleY(1);
+            }
+
+            .index-row:hover,
+            .index-row:hover .index-num,
+            .index-row:hover .index-status,
+            .index-row:hover .index-name p {
+                color: var(--accent-ink);
+            }
+
+            .index-row:hover .index-arrow {
+                border-color: var(--accent-ink);
+                transform: rotate(-45deg);
             }
         }
 
         /* ========================================
            タブレット・スマートフォン
         ======================================== */
-        /* 左右に矢印を置く余白がない幅では、矢印とドットをスライドの下に1列で並べる（本文との重なり防止） */
-        @media (max-width: 1319px) {
-            .hero {
-                padding-bottom: 48px;
-            }
-
-            .slider-controls {
-                position: relative;
-                z-index: 10;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 12px;
-                margin-top: 36px;
-            }
-
-            .slider-arrow,
-            .slider-nav {
-                position: static;
-                translate: none;
-            }
-
-            .slider-arrow {
-                width: 44px;
-                height: 44px;
-                background: rgba(255, 255, 255, 0.85);
-            }
-        }
-
-        @media (max-width: 900px) {
-            .hero-inner {
-                gap: 32px;
-            }
-
-            .phone {
-                width: 240px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .site-header {
-                padding-block-end: 10px;
-                padding-top: max(10px, env(safe-area-inset-top, 0px));
-            }
-
-            .header-inner {
-                min-height: 56px;
-                padding-left: 20px;
-            }
-
-            .section {
-                padding-block: 88px;
-            }
-
-            .hero {
-                min-height: auto;
-                padding: 130px 0 32px;
-            }
-
-            .hero-inner {
+        @media (max-width: 960px) {
+            .app-panel {
                 grid-template-columns: 1fr;
-                gap: 44px;
-                text-align: center;
+                min-height: auto;
+                gap: 48px;
             }
 
-            .hero-content {
-                margin-inline: auto;
+            .app-panel.is-flipped .app-visual {
+                order: 0;
             }
 
-            .app-logo {
-                width: 76px;
-                height: 76px;
-                margin-inline: auto;
+            .app-visual {
+                order: -1;
+                padding-top: 12px;
             }
 
-            .hero-description {
-                margin-inline: auto;
-                margin-top: 24px;
-                font-size: 15px;
-                line-height: 1.9;
+            .device,
+            .app-panel.is-flipped .device {
+                width: min(240px, 62vw);
+                transform: perspective(1200px) rotateY(-8deg) rotateX(3deg) rotateZ(2deg);
             }
 
-            /* 手動改行は広い画面用。スマホでは自然に折り返す */
-            .hero-description br {
+            .hero-bottom {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 720px) {
+            .header-inner {
+                height: 60px;
+            }
+
+            .site-nav .hide-sp {
                 display: none;
             }
 
-            .hero-action-group {
-                justify-content: center;
-                margin-top: 32px;
-            }
-
-            .phone {
-                width: 220px;
-                border-radius: 36px;
-                padding: 8px;
-            }
-
-            .phone img {
-                border-radius: 29px;
-            }
-
-            .app-tabs {
-                width: min(100%, 420px);
-                margin-top: 28px;
-            }
-
-            .section-title {
-                margin-bottom: 44px;
-            }
-
-            .app-card {
-                min-height: auto;
-                padding: 24px;
-                border-radius: 24px;
-            }
-
-            .app-card p {
-                margin-top: 20px;
-            }
-
-            /* スマホでは App Store ボタンをタイトルの下にそろえる */
-            .app-card-info {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .site-footer {
-                text-align: center;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .logo {
-                font-size: 16px;
-            }
-
             .hero {
-                padding-top: 118px;
+                min-height: auto;
+                padding: 112px 0 48px;
+                justify-content: flex-start;
             }
 
-            .hero-description {
+            .hero::before {
+                background-size: 48px 48px;
+            }
+
+            .hero-top {
+                flex-direction: column;
+                gap: 18px;
+            }
+
+            .hero-title {
+                font-size: 24vw;
+            }
+
+            .hero-title .outline {
+                -webkit-text-stroke-width: 1px;
+            }
+
+            .hero-lead {
+                font-size: 15px;
+            }
+
+            .hero-apps {
+                flex-direction: column;
+            }
+
+            .hero-app-chip {
+                justify-content: flex-start;
+            }
+
+            .section-head {
+                grid-template-columns: 1fr;
+            }
+
+            .app-panel {
+                border-radius: 28px;
+                padding: 28px 22px 32px;
+            }
+
+            .app-heading {
+                gap: 14px;
+            }
+
+            .app-heading img {
+                width: 56px;
+                height: 56px;
+                border-radius: 15px;
+            }
+
+            .app-tagline {
+                margin-top: 22px;
+            }
+
+            .app-desc {
                 font-size: 14.5px;
             }
 
-            .hero-action-group {
+            .app-actions {
                 flex-direction: column;
                 align-items: stretch;
-                gap: 12px;
-                width: min(100%, 320px);
-                margin-inline: auto;
             }
 
-            .app-store-button {
-                justify-content: center;
+            .index-row {
+                grid-template-columns: 48px 1fr auto;
+                grid-template-areas:
+                    "icon name arrow"
+                    "icon status arrow";
+                row-gap: 6px;
+                column-gap: 16px;
+                padding: 22px 4px;
             }
 
-            .phone {
-                width: 200px;
+            .index-num {
+                display: none;
             }
 
-            .app-tabs {
-                grid-template-columns: 1fr;
-                border-radius: 22px;
+            .index-icon {
+                grid-area: icon;
+                width: 48px;
+                height: 48px;
+                border-radius: 13px;
+                align-self: start;
             }
 
-            .app-tab {
-                min-height: 44px;
+            .index-name {
+                grid-area: name;
+            }
+
+            .index-status {
+                grid-area: status;
+            }
+
+            .index-arrow {
+                grid-area: arrow;
+                width: 40px;
+                height: 40px;
+            }
+
+            .index-name p {
+                font-size: 13px;
             }
         }
 
         @media (prefers-reduced-motion: reduce) {
+            .marquee-track,
+            .app-meta span.is-live::before {
+                animation: none;
+            }
+
+            .js .reveal {
+                opacity: 1;
+                transform: none;
+            }
+
             *,
             *::before,
             *::after {
                 transition-duration: 0.01ms !important;
             }
         }
+        /* 近日公開（審査中のアプリ） */
+        .app-meta span.is-soon {
+            color: var(--app, var(--accent));
+            border-color: color-mix(in srgb, var(--app, var(--accent)) 45%, transparent);
+        }
+
+        .btn-soon {
+            border: 1px dashed var(--line-strong);
+            color: var(--sub);
+            cursor: default;
+        }
+
+        .btn-soon svg {
+            opacity: 0.6;
+        }
+
+        .index-status.is-soon {
+            color: var(--app, var(--accent));
+        }
     </style>
+    <script>document.documentElement.classList.add('js');</script>
 </head>
 
-<body>
+<body id="top">
 
-    <!-- App Store アイコン（各ボタンで再利用） -->
     <svg width="0" height="0" style="position:absolute" aria-hidden="true">
         <symbol id="icon-apple" viewBox="0 0 24 24">
             <path d="M16.37 12.74c-.02-2.2 1.8-3.26 1.88-3.31-1.03-1.5-2.62-1.7-3.18-1.72-1.35-.14-2.64.8-3.33.8-.69 0-1.74-.78-2.87-.76-1.47.02-2.83.86-3.59 2.18-1.53 2.66-.39 6.6 1.1 8.75.73 1.05 1.6 2.24 2.73 2.2 1.1-.05 1.51-.71 2.84-.71 1.32 0 1.7.71 2.86.69 1.18-.02 1.93-1.07 2.65-2.13.84-1.22 1.18-2.4 1.2-2.46-.03-.01-2.3-.88-2.32-3.5zM14.2 6.29c.6-.73 1.01-1.75.9-2.76-.87.04-1.92.58-2.54 1.31-.56.65-1.05 1.69-.92 2.68.97.08 1.96-.49 2.56-1.23z"/>
@@ -858,180 +1102,242 @@
     </svg>
 
     <!-- ヘッダー -->
-    <header class="site-header">
-        <div class="header-inner">
-            <a href="./" class="logo">YUKUN'S <span>Collect</span></a>
-            <nav class="site-nav" aria-label="サイト">
-                <a href="https://note.com/yukun_ios" target="_blank" rel="noopener">Blog</a>
+    <header class="site-header" data-header>
+        <div class="container header-inner">
+            <a href="./" class="logo"><i class="logo-mark" aria-hidden="true"></i>YUKUN'S <span>Collect</span></a>
+            <nav class="site-nav mono" aria-label="サイト">
+                <a href="#apps" class="hide-sp">Apps</a>
+                <a href="#index" class="hide-sp">Index</a>
+                <a href="https://note.com/yukun_ios" target="_blank" rel="noopener" class="is-pill">Blog ↗</a>
             </nav>
         </div>
     </header>
 
     <main>
-        <!-- ヒーロー（スライドショー） -->
-        <section class="hero" aria-roledescription="carousel" aria-label="アプリ紹介" data-slider>
-            <div class="hero-slider">
-
-                <!-- スライド1: flashMorse -->
-                <div class="hero-slide is-active" role="group" aria-roledescription="slide" aria-label="1 / 2">
-                    <div class="container hero-inner">
-                        <div class="hero-content">
-                            <img class="app-logo" src="img/flashMorse/icon-256.jpg" alt="flashMorse アプリアイコン" width="82" height="82">
-                            <span class="label-pill">iOS APPLICATION</span>
-                            <h1>flashMorse</h1>
-                            <p class="hero-description">
-                                入力したテキストを、モールス信号へ。<br>
-                                iPhoneのフラッシュライトを使って、文字を光のパターンとして表現します。
-                            </p>
-                            <p class="hero-description">
-                                余計な機能を削ぎ落とした、シンプルなインターフェース。<br>
-                                必要なときに、すぐ使える。
-                            </p>
-                            <div class="hero-action-group">
-                                <a href="https://apps.apple.com/jp/app/id6738281439" target="_blank" rel="noopener" class="app-store-button">
-                                    <svg aria-hidden="true"><use href="#icon-apple"></use></svg>
-                                    <span class="app-store-text">
-                                        <small>Download on the</small>
-                                        <strong>App Store</strong>
-                                    </span>
-                                </a>
-                                <a href="./flashMorse/details.html" class="detail-button">詳細・スクリーンショット</a>
-                            </div>
-                        </div>
-                        <div class="hero-image">
-                            <div class="phone">
-                                <img src="img/flashMorse/home-600.jpg" alt="flashMorseのホーム画面" width="600" height="1303" fetchpriority="high" decoding="async">
-                            </div>
-                            <nav class="app-tabs" aria-label="flashMorse の情報">
-                                <a class="app-tab" href="./flashMorse/support.html">Support</a>
-                                <a class="app-tab" href="./privacyPolicy.html">Privacy Policy</a>
-                            </nav>
-                        </div>
-                    </div>
+        <!-- ヒーロー -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-top mono">
+                    <span>Independent iOS Apps — Made in Japan</span>
+                    <div class="signal" data-signal="SIMPLE" aria-hidden="true"></div>
                 </div>
 
-                <!-- スライド2: やめ活 -->
-                <div class="hero-slide" role="group" aria-roledescription="slide" aria-label="2 / 2" inert>
-                    <div class="container hero-inner">
-                        <div class="hero-content">
-                            <img class="app-logo" src="img/yamekatsu/icon-256.jpg" alt="やめ活 アプリアイコン" width="82" height="82" loading="lazy">
-                            <span class="label-pill">iOS APPLICATION</span>
-                            <h1>やめ活</h1>
-                            <p class="hero-description">
-                                断ち切りたい悪習や、日々の習慣を直感的にトラッキング。<br>
-                                日々の記録を可視化し、目標達成をサポートする習慣化アプリです。
-                            </p>
-                            <p class="hero-description">
-                                無駄を省いたシンプルなデザインで、<br>
-                                毎日の継続をストレスなく記録できます。
-                            </p>
-                            <div class="hero-action-group">
-                                <a href="https://apps.apple.com/jp/app/id6816400389" target="_blank" rel="noopener" class="app-store-button">
+                <h1 class="hero-title" aria-label="Simple, every day.">
+                    <span class="line">Simple<span class="dot">,</span></span>
+                    <span class="line outline">every</span>
+                    <span class="line">day<span class="dot">.</span></span>
+                </h1>
+
+                <div class="hero-bottom">
+                    <p class="hero-lead">
+                        <strong>毎日、何度でも開きたくなるアプリを。</strong><br>
+                        余計なものを削ぎ落として、必要なときにすぐ使える。そんなシンプルなiOSアプリをつくっています。
+                    </p>
+                    <div class="hero-apps">
+                        <a href="#flashmorse" class="hero-app-chip">
+                            <img src="img/flashMorse/icon-256.jpg" alt="" width="40" height="40">
+                            <span><span class="mono">01</span><br>flashMorse</span>
+                        </a>
+                        <a href="#yamekatsu" class="hero-app-chip">
+                            <img src="img/yamekatsu/icon-256.jpg" alt="" width="40" height="40">
+                            <span><span class="mono">02</span><br>やめ活</span>
+                        </a>
+                        <a href="#kanjicross" class="hero-app-chip">
+                            <img src="img/kanjicross/icon-256.jpg" alt="" width="40" height="40">
+                            <span><span class="mono">03</span><br>漢字クロス</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 流れる帯 -->
+        <div class="marquee" aria-hidden="true">
+            <div class="marquee-track">
+                <div class="marquee-group">
+                    <span>Simple</span><span class="morse">··· ·· —— ·——· ·—·· ·</span>
+                    <span>Useful</span><span class="morse">··— ··· · ··—· ··— ·—··</span>
+                    <span>Every day</span><span class="morse">· ···— · ·—· —·——</span>
+                    <span>iOS Apps</span><span class="morse">·· ——— ···</span>
+                </div>
+                <div class="marquee-group">
+                    <span>Simple</span><span class="morse">··· ·· —— ·——· ·—·· ·</span>
+                    <span>Useful</span><span class="morse">··— ··· · ··—· ··— ·—··</span>
+                    <span>Every day</span><span class="morse">· ···— · ·—· —·——</span>
+                    <span>iOS Apps</span><span class="morse">·· ——— ···</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- アプリ紹介 -->
+        <section id="apps" class="section">
+            <div class="container">
+                <div class="section-head">
+                    <div class="reveal">
+                        <span class="mono">// Apps</span>
+                        <h2>Featured<br>Apps</h2>
+                    </div>
+                    <p class="reveal" style="--delay:0.1s">App Storeで公開中・公開予定のアプリ。どれも、ひとつの目的のためだけにつくりました。</p>
+                </div>
+
+                <div class="showcase">
+
+                    <!-- flashMorse -->
+                    <article id="flashmorse" class="app-panel reveal" data-index="01" style="--app:#f2e94e" data-tilt>
+                        <div class="app-body">
+                            <div class="app-meta mono">
+                                <span class="is-live">Released</span>
+                                <span>iOS</span>
+                                <span>Utility</span>
+                            </div>
+                            <div class="app-heading">
+                                <img src="img/flashMorse/icon-256.jpg" alt="flashMorse アプリアイコン" width="72" height="72" loading="lazy">
+                                <h3>flashMorse</h3>
+                            </div>
+                            <p class="app-tagline">入力したテキストを、<br><em>光のモールス信号</em>へ。</p>
+                            <p class="app-desc">iPhoneのフラッシュライトを使って、文字を光のパターンとして表現します。余計な機能を削ぎ落とした、シンプルなインターフェース。必要なときに、すぐ使える。</p>
+                            <div class="app-actions">
+                                <a href="https://apps.apple.com/jp/app/id6738281439" target="_blank" rel="noopener" class="btn btn-store">
                                     <svg aria-hidden="true"><use href="#icon-apple"></use></svg>
-                                    <span class="app-store-text">
-                                        <small>Download on the</small>
-                                        <strong>App Store</strong>
-                                    </span>
+                                    <span><span class="small">Download on the</span><span class="big">App Store</span></span>
                                 </a>
-                                <a href="./yamekatsu/details.html" class="detail-button">詳細・スクリーンショット</a>
+                                <a href="./flashMorse/details.html" class="btn btn-ghost">詳細・スクリーンショット</a>
+                            </div>
+                            <div class="app-links mono">
+                                <a href="./flashMorse/support.html">Support</a>
+                                <a href="./privacyPolicy.html">Privacy Policy</a>
                             </div>
                         </div>
-                        <div class="hero-image">
-                            <div class="phone">
+                        <div class="app-visual">
+                            <div class="device">
+                                <img src="img/flashMorse/home-600.jpg" alt="flashMorseのホーム画面" width="600" height="1303" loading="lazy" decoding="async">
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- やめ活 -->
+                    <article id="yamekatsu" class="app-panel is-flipped reveal" data-index="02" style="--app:#6b9bff" data-tilt>
+                        <div class="app-visual">
+                            <div class="device">
                                 <img src="img/yamekatsu/home-600.jpg" alt="やめ活のホーム画面" width="600" height="1304" loading="lazy" decoding="async">
                             </div>
-                            <nav class="app-tabs" aria-label="やめ活 の情報">
-                                <a class="app-tab" href="./yamekatsu/support.html">Support</a>
-                                <a class="app-tab" href="./yamekatsu/privacy.html">Privacy Policy</a>
-                            </nav>
                         </div>
-                    </div>
-                </div>
+                        <div class="app-body">
+                            <div class="app-meta mono">
+                                <span class="is-live">Released</span>
+                                <span>iOS</span>
+                                <span>Habit Tracker</span>
+                            </div>
+                            <div class="app-heading">
+                                <img src="img/yamekatsu/icon-256.jpg" alt="やめ活 アプリアイコン" width="72" height="72" loading="lazy">
+                                <h3>やめ活</h3>
+                            </div>
+                            <p class="app-tagline">断ち切りたい習慣を、<br><em>記録で見える化</em>する。</p>
+                            <p class="app-desc">悪習や日々の習慣を直感的にトラッキング。記録を可視化して、目標達成をサポートする習慣化アプリです。無駄を省いたシンプルなデザインで、毎日の継続をストレスなく記録できます。</p>
+                            <div class="app-actions">
+                                <a href="https://apps.apple.com/jp/app/id6816400389" target="_blank" rel="noopener" class="btn btn-store">
+                                    <svg aria-hidden="true"><use href="#icon-apple"></use></svg>
+                                    <span><span class="small">Download on the</span><span class="big">App Store</span></span>
+                                </a>
+                                <a href="./yamekatsu/details.html" class="btn btn-ghost">詳細・スクリーンショット</a>
+                            </div>
+                            <div class="app-links mono">
+                                <a href="./yamekatsu/support.html">Support</a>
+                                <a href="./yamekatsu/privacy.html">Privacy Policy</a>
+                            </div>
+                        </div>
+                    </article>
 
-            </div>
+                    <!-- 漢字クロス -->
+                    <article id="kanjicross" class="app-panel reveal" data-index="03" style="--app:#d9b54a" data-tilt>
+                        <div class="app-body">
+                            <div class="app-meta mono">
+                                <span class="is-soon">Coming Soon</span>
+                                <span>iOS</span>
+                                <span>Puzzle</span>
+                            </div>
+                            <div class="app-heading">
+                                <img src="img/kanjicross/icon-256.jpg" alt="漢字クロス アプリアイコン" width="72" height="72" loading="lazy">
+                                <h3>漢字クロス</h3>
+                            </div>
+                            <p class="app-tagline">毎朝9問、<br><em>新しい漢字パズル</em>が届く。</p>
+                            <p class="app-desc">□に1字入れて、4つの熟語を完成させる「和同開珎」パズル。選択式ではなく自分で入力して解く手ごたえと、詰まっても安心の3段階ヒント。朝の脳トレにぴったりです。</p>
+                            <div class="app-actions">
+                                <span class="btn btn-soon" aria-disabled="true">
+                                    <svg aria-hidden="true"><use href="#icon-apple"></use></svg>
+                                    <span>App Store で近日公開</span>
+                                </span>
+                                <a href="./kanjicross/details.html" class="btn btn-ghost">詳細・スクリーンショット</a>
+                            </div>
+                            <div class="app-links mono">
+                                <a href="./kanjicross/support.html">Support</a>
+                                <a href="./kanjicross/privacy.html">Privacy Policy</a>
+                            </div>
+                        </div>
+                        <div class="app-visual">
+                            <div class="device">
+                                <img src="img/kanjicross/puzzle-600.jpg" alt="漢字クロスの問題画面" width="600" height="1300" loading="lazy" decoding="async">
+                            </div>
+                        </div>
+                    </article>
 
-            <div class="slider-controls">
-                <button type="button" class="slider-arrow prev-arrow" aria-label="前のアプリ" data-slider-prev>
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
-                </button>
-                <div class="slider-nav">
-                    <button type="button" class="slider-dot" aria-label="flashMorse" aria-current="true"></button>
-                    <button type="button" class="slider-dot" aria-label="やめ活" aria-current="false"></button>
                 </div>
-                <button type="button" class="slider-arrow next-arrow" aria-label="次のアプリ" data-slider-next>
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
-                </button>
             </div>
         </section>
 
         <!-- アプリ一覧 -->
-        <section id="apps" class="section">
+        <section id="index" class="section" style="padding-top:0">
             <div class="container">
-
-                <div class="section-title">
-                    <span class="label">Apps</span>
-                    <h2>More Apps</h2>
-                    <p>これからも、シンプルで使いやすいアプリを開発していきます。</p>
+                <div class="section-head">
+                    <div class="reveal">
+                        <span class="mono">// Index</span>
+                        <h2>More<br>Apps</h2>
+                    </div>
+                    <p class="reveal" style="--delay:0.1s">これからも、シンプルで使いやすいアプリを開発していきます。</p>
                 </div>
 
-                <div class="app-grid">
-
-                    <article class="app-card">
-                        <div class="app-card-header">
-                            <img class="app-card-icon" src="img/flashMorse/icon-256.jpg" alt="" width="64" height="64" loading="lazy" decoding="async">
-                            <div class="app-card-info">
-                                <div>
-                                    <span class="label-pill">iOS</span>
-                                    <h3><a href="./flashMorse/details.html" class="app-card-main-link">flashMorse</a></h3>
-                                    <span class="app-status">RELEASED</span>
-                                </div>
-                                <a href="https://apps.apple.com/jp/app/id6738281439" target="_blank" rel="noopener" class="app-store-button is-small" aria-label="flashMorse を App Store で見る">
-                                    <svg aria-hidden="true"><use href="#icon-apple"></use></svg>
-                                    <span class="app-store-text">
-                                        <small>Download on the</small>
-                                        <strong>App Store</strong>
-                                    </span>
-                                </a>
-                            </div>
+                <ol class="index-list">
+                    <li class="index-row reveal">
+                        <span class="index-num mono">01</span>
+                        <img class="index-icon" src="img/flashMorse/icon-256.jpg" alt="" width="56" height="56" loading="lazy">
+                        <div class="index-name">
+                            <h3><a href="./flashMorse/details.html" class="index-link">flashMorse</a></h3>
+                            <p>文字を光のパターンとして表現するアプリ</p>
                         </div>
-                        <p>iPhoneのフラッシュライトを使って、文字を光のパターンとして表現するアプリです。</p>
-                    </article>
-
-                    <article class="app-card">
-                        <div class="app-card-header">
-                            <img class="app-card-icon" src="img/yamekatsu/icon-256.jpg" alt="" width="64" height="64" loading="lazy" decoding="async">
-                            <div class="app-card-info">
-                                <div>
-                                    <span class="label-pill">iOS</span>
-                                    <h3><a href="./yamekatsu/details.html" class="app-card-main-link">やめ活</a></h3>
-                                    <span class="app-status">RELEASED</span>
-                                </div>
-                                <a href="https://apps.apple.com/jp/app/id6816400389" target="_blank" rel="noopener" class="app-store-button is-small" aria-label="やめ活 を App Store で見る">
-                                    <svg aria-hidden="true"><use href="#icon-apple"></use></svg>
-                                    <span class="app-store-text">
-                                        <small>Download on the</small>
-                                        <strong>App Store</strong>
-                                    </span>
-                                </a>
-                            </div>
+                        <span class="index-status mono">● Released</span>
+                        <a href="https://apps.apple.com/jp/app/id6738281439" target="_blank" rel="noopener" class="index-arrow index-store" aria-label="flashMorse を App Store で見る">↗</a>
+                    </li>
+                    <li class="index-row reveal" style="--delay:0.08s">
+                        <span class="index-num mono">02</span>
+                        <img class="index-icon" src="img/yamekatsu/icon-256.jpg" alt="" width="56" height="56" loading="lazy">
+                        <div class="index-name">
+                            <h3><a href="./yamekatsu/details.html" class="index-link">やめ活</a></h3>
+                            <p>日々の記録を可視化する習慣化アプリ</p>
                         </div>
-                        <p>日々の記録を可視化し、目標達成をサポートする習慣化アプリです。</p>
-                    </article>
-
-                    <article class="app-card">
-                        <div class="app-card-header">
-                            <div class="app-card-icon" aria-hidden="true"></div>
-                            <div class="app-card-info">
-                                <div>
-                                    <h3>Coming Soon</h3>
-                                    <span class="app-status">IDEA</span>
-                                </div>
-                            </div>
+                        <span class="index-status mono">● Released</span>
+                        <a href="https://apps.apple.com/jp/app/id6816400389" target="_blank" rel="noopener" class="index-arrow index-store" aria-label="やめ活 を App Store で見る">↗</a>
+                    </li>
+                    <li class="index-row reveal" style="--delay:0.16s; --app:#d9b54a">
+                        <span class="index-num mono">03</span>
+                        <img class="index-icon" src="img/kanjicross/icon-256.jpg" alt="" width="56" height="56" loading="lazy">
+                        <div class="index-name">
+                            <h3><a href="./kanjicross/details.html" class="index-link">漢字クロス</a></h3>
+                            <p>□に1字入れて4つの熟語を完成させる漢字パズル</p>
                         </div>
-                        <p>日常のちょっとした不便を解決できる、新しいアプリを企画・開発しています。</p>
-                    </article>
-
-                </div>
+                        <span class="index-status mono is-soon">◐ Coming Soon</span>
+                        <a href="./kanjicross/details.html" class="index-arrow" aria-label="漢字クロス の詳細を見る">→</a>
+                    </li>
+                    <li class="index-row reveal" style="--delay:0.24s">
+                        <span class="index-num mono">04</span>
+                        <div class="index-icon" aria-hidden="true"></div>
+                        <div class="index-name">
+                            <h3>Coming Soon</h3>
+                            <p>日常のちょっとした不便を解決する、新しいアプリを企画中</p>
+                        </div>
+                        <span class="index-status mono is-idea">○ Idea</span>
+                        <span class="index-arrow" aria-hidden="true">…</span>
+                    </li>
+                </ol>
             </div>
         </section>
     </main>
@@ -1039,81 +1345,111 @@
     <!-- フッター -->
     <footer class="site-footer">
         <div class="container">
-            <p class="copyright">© 2026 YUKUN'S Collect. All Rights Reserved.</p>
+            <div class="footer-cta">
+                <p>開発の裏側や、リリースまでの記録は note で書いています。</p>
+                <a href="https://note.com/yukun_ios" target="_blank" rel="noopener" class="btn btn-ghost">note を読む</a>
+            </div>
+            <div class="footer-wordmark" aria-hidden="true">YUKUN'S</div>
+            <div class="footer-bottom mono">
+                <span>© 2026 YUKUN'S Collect. All Rights Reserved.</span>
+                <a href="#top" data-to-top>Back to top ↑</a>
+            </div>
         </div>
     </footer>
 
     <script>
         (() => {
-            const root = document.querySelector('[data-slider]');
-            if (!root) return;
+            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-            const slides = [...root.querySelectorAll('.hero-slide')];
-            const dots = [...root.querySelectorAll('.slider-dot')];
-            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-            const INTERVAL = 6000; // 6秒ごとに切り替え
-            const SWIPE_THRESHOLD = 50;
-            let current = 0;
-            let timer = null;
+            // ヘッダー: 少しスクロールしたら背景を付ける
+            const header = document.querySelector('[data-header]');
+            const onScroll = () => header.classList.toggle('is-scrolled', window.scrollY > 24);
+            onScroll();
+            window.addEventListener('scroll', onScroll, { passive: true });
 
-            const show = (index) => {
-                current = (index + slides.length) % slides.length;
-                slides.forEach((slide, i) => {
-                    const active = i === current;
-                    slide.classList.toggle('is-active', active);
-                    slide.inert = !active; // 非表示スライドのリンクにフォーカスが行かないように
-                });
-                dots.forEach((dot, i) => dot.setAttribute('aria-current', String(i === current)));
-            };
-
-            const stop = () => {
-                clearInterval(timer);
-                timer = null;
-            };
-
-            const start = () => {
-                stop();
-                if (!reduceMotion.matches && !document.hidden) {
-                    timer = setInterval(() => show(current + 1), INTERVAL);
-                }
-            };
-
-            // 手動で動かしたらタイマーをリセット
-            const go = (index) => {
-                show(index);
-                start();
-            };
-
-            root.querySelector('[data-slider-prev]').addEventListener('click', () => go(current - 1));
-            root.querySelector('[data-slider-next]').addEventListener('click', () => go(current + 1));
-            dots.forEach((dot, i) => dot.addEventListener('click', () => go(i)));
-
-            // スマホの左右スワイプ
-            let startX = 0;
-            let startY = 0;
-            root.addEventListener('touchstart', (e) => {
-                startX = e.touches[0].clientX;
-                startY = e.touches[0].clientY;
-            }, { passive: true });
-            root.addEventListener('touchend', (e) => {
-                const dx = e.changedTouches[0].clientX - startX;
-                const dy = e.changedTouches[0].clientY - startY;
-                if (Math.abs(dx) > SWIPE_THRESHOLD && Math.abs(dx) > Math.abs(dy)) {
-                    go(current + (dx < 0 ? 1 : -1));
-                }
-            }, { passive: true });
-
-            // マウスを乗せている間・操作中・タブが裏にある間は止める
-            root.addEventListener('mouseenter', stop);
-            root.addEventListener('mouseleave', start);
-            root.addEventListener('focusin', stop);
-            root.addEventListener('focusout', (e) => {
-                if (!root.contains(e.relatedTarget)) start();
+            // トップへ戻る
+            document.querySelector('[data-to-top]').addEventListener('click', (e) => {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
             });
-            document.addEventListener('visibilitychange', () => (document.hidden ? stop() : start()));
-            reduceMotion.addEventListener('change', start);
 
-            start();
+            // スクロールで表示
+            const reveals = document.querySelectorAll('.reveal');
+            if ('IntersectionObserver' in window && !reduceMotion) {
+                const io = new IntersectionObserver((entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-in');
+                            io.unobserve(entry.target);
+                        }
+                    });
+                }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+                reveals.forEach((el) => io.observe(el));
+            } else {
+                reveals.forEach((el) => el.classList.add('is-in'));
+            }
+
+            // ヒーローのモールス信号: 単語を点と線に変換し、順番に光らせる
+            const MORSE = { S: '...', I: '..', M: '--', P: '.--.', L: '.-..', E: '.' };
+            const signal = document.querySelector('[data-signal]');
+            if (signal) {
+                const marks = [];
+                [...signal.dataset.signal].forEach((ch, i, all) => {
+                    [...MORSE[ch]].forEach((s) => {
+                        const el = document.createElement('i');
+                        if (s === '-') el.className = 'dash';
+                        signal.appendChild(el);
+                        marks.push({ el, on: s === '-' ? 3 : 1 });
+                    });
+                    if (i < all.length - 1) {
+                        const gap = document.createElement('i');
+                        gap.className = 'gap';
+                        signal.appendChild(gap);
+                    }
+                });
+
+                if (reduceMotion) {
+                    marks.forEach((m) => m.el.classList.add('is-on'));
+                } else {
+                    const UNIT = 140; // ミリ秒
+                    let step = 0;
+                    const tick = () => {
+                        if (step === marks.length) {
+                            step = 0;
+                            setTimeout(tick, UNIT * 10);
+                            return;
+                        }
+                        const mark = marks[step++];
+                        mark.el.classList.add('is-on');
+                        setTimeout(() => {
+                            mark.el.classList.remove('is-on');
+                            setTimeout(tick, UNIT);
+                        }, UNIT * mark.on);
+                    };
+                    tick();
+                }
+            }
+
+            // カード: マウスに合わせて光が追従し、端末が少し傾く
+            if (window.matchMedia('(hover: hover) and (pointer: fine)').matches && !reduceMotion) {
+                document.querySelectorAll('[data-tilt]').forEach((panel) => {
+                    const device = panel.querySelector('.device');
+                    const base = panel.classList.contains('is-flipped') ? 12 : -12;
+                    panel.addEventListener('pointermove', (e) => {
+                        const r = panel.getBoundingClientRect();
+                        const x = (e.clientX - r.left) / r.width;
+                        const y = (e.clientY - r.top) / r.height;
+                        panel.style.setProperty('--mx', `${x * 100}%`);
+                        panel.style.setProperty('--my', `${y * 100}%`);
+                        device.style.setProperty('--ry', `${base + (x - 0.5) * 16}deg`);
+                        device.style.setProperty('--rx', `${4 - (y - 0.5) * 10}deg`);
+                    });
+                    panel.addEventListener('pointerleave', () => {
+                        device.style.removeProperty('--ry');
+                        device.style.removeProperty('--rx');
+                    });
+                });
+            }
         })();
     </script>
 </body>
